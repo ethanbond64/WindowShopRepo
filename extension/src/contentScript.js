@@ -11,8 +11,21 @@
 // For more information on Content Scripts,
 // See https://developer.chrome.com/extensions/content_scripts
 
+const parseLink = (link) => {
+//  switch(true) {
+//    case /*youtube.com/watch?v=*/.test(link):
+        return link.split("?v=")[1].split("&")[0];
+//    case /*vimeo.com*/.test(link):
+//        return "TODO";
+//    case /*netflix.com*/.test(link):
+//        return "TODO";
+//    default:
+//        return null;
+//  }
+}
+
 // Log url of current webpage
-console.log("Ethan's event. Current url is:", window.location.href);
+console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", parseLink(window.location.href));
 
 // Communicate with background file by sending a message
 chrome.runtime.sendMessage(
