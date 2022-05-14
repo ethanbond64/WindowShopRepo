@@ -1,6 +1,7 @@
 .idea/
 .DS_Store
 .env
+/venv
 
 # NPM
 /extension/node_modules
