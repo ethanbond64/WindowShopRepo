@@ -1,7 +1,5 @@
-from datetime import datetime
 from backend.server.utils.extensions import db
 from backend.server.utils.BaseModel import BaseModel
-# from sqlalchemy.dialects.postgresql import JSON
 
 
 class Video(BaseModel, db.Model):
