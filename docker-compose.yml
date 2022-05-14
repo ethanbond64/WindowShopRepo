@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  postgres:
+    image: 'postgres:9.5'
+    env_file:
+      - '.env'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+
+  server:
+    build: backend/.
+    command: > 
+      gunicorn -b 0.0.0.0:8000 
+        -w 4
+        --access-logfile -
+        --reload
+        "server.app:create_app()"
+    env_file:
+      - '.env'
+    volumes:
+      - './backend:/server'
+    ports:
+      - '8000:8000'
+
+volumes:
+  postgres:
