@@ -10,6 +10,16 @@ services:
     ports:
       - '5432:5432'
 
+  frontend:
+    build: './frontend'
+    command: npm run start
+    stdin_open: true
+    ports:
+      - '3000:3000'
+    volumes:
+      - './frontend/:/frontend'
+      - '/frontend/node_modules'
+
   server:
     build: backend/.
     command: > 
