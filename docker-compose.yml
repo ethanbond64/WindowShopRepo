@@ -10,6 +10,13 @@ services:
     ports:
       - '5432:5432'
 
+  extension:
+    build: './extension'
+    command: npm run watch
+    volumes:
+      - './extension/:/extension'
+      - '/extension/node_modules'
+
   frontend:
     build: './frontend'
     command: npm run start
