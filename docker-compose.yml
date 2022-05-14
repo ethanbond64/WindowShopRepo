@@ -21,7 +21,7 @@ services:
     env_file:
       - '.env'
     volumes:
-      - './backend:/server'
+      - './backend:/home/backend'
     ports:
       - '8000:8000'
 

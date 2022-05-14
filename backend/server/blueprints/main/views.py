@@ -3,8 +3,8 @@ from backend.server.blueprints.main.models import Video
 from flask_cors import CORS
 
 
-main = Blueprint('main', __name__,template_folder='templates')
-CORS(main,origins="http://localhost:3000")
+main = Blueprint('main', __name__, template_folder='templates')
+CORS(main, origins="http://localhost:3000")
 
 # GET ENDPOINTS
 @main.route('/test',methods=['GET'])

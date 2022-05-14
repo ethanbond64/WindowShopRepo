@@ -3,7 +3,7 @@ FROM python:3.7.5-slim-buster
 RUN apt-get update && apt-get install -qq -y \
   build-essential libpq-dev --no-install-recommends
 
-ENV SERVER_PATH /server
+ENV SERVER_PATH /home
 RUN mkdir -p $SERVER_PATH
 
 WORKDIR $SERVER_PATH

@@ -1,5 +1,5 @@
 import datetime
-from server.utils.extensions import db
+from backend.server.utils.extensions import db
 
 def get_datetime():
 

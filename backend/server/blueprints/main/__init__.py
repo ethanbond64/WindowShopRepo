@@ -1,1 +1,1 @@
-from server.blueprints.main.views import main
+from backend.server.blueprints.main.views import main

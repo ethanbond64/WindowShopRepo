@@ -1,7 +1,6 @@
-from celery import Celery
 from flask import Flask
-from server.utils.extensions import db
-from server.blueprints.main import main
+from backend.server.utils.extensions import db
+from backend.server.blueprints.main import main
 
 def create_app():
     app = Flask(__name__)
