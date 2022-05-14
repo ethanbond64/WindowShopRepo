@@ -1,7 +1,12 @@
 .idea/
-.DS_Store
-.env
+*.DS_Store
 /venv
+*.db
+*.pyc
+*.sym
+.todo
+*.env
+.env
 
 # NPM
 /extension/node_modules
