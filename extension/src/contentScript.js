@@ -24,30 +24,46 @@ const parseLink = (link) => {
 //  }
 }
 
-// Log url of current webpage
-console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", parseLink(window.location.href));
+window.addEventListener ("load", myMain, false);
 
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  response => {
-    console.log(response.message);
-  }
-);
+function myMain (evt) {
 
-// Listen for message
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
-  }
+    // Log url of current webpage
+    console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", parseLink(window.location.href));
+    let sideWidth = document.getElementById('related').offsetWidth;
+    setTimeout(() => {
+      console.log("Wait padding",document.defaultView.getComputedStyle(document.getElementById('secondary'), null).getPropertyValue('padding-right'))
+      console.log("Wait width",document.getElementById('related').offsetWidth);
+    }, 3000);
+    console.log("Sidebar width: ",sideWidth);
 
-  // Send an empty response
-  // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-  sendResponse({});
-  return true;
-});
+    let modalDialogParentDiv = document.createElement("div");
+    // Make the width the width of 'secondary' and right attribute = computed padding right of 'secondary'
+    modalDialogParentDiv.setAttribute("style","position: absolute; width: 402px; border: 1px solid rgb(51, 102, 153); padding-right: 24px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 149px; right: 0;");
+    document.body.appendChild(modalDialogParentDiv);
+
+    // Communicate with background file by sending a message
+    chrome.runtime.sendMessage(
+      {
+        type: 'GREETINGS',
+        payload: {
+          message: 'Hello, my name is Con. I am from ContentScript.',
+        },
+      },
+      response => {
+        console.log(response.message);
+      }
+    );
+
+    // Listen for message
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.type === 'COUNT') {
+        console.log(`Current count is ${request.payload.count}`);
+      }
+
+      // Send an empty response
+      // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
+      sendResponse({});
+      return true;
+    });
+}
