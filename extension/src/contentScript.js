@@ -24,23 +24,41 @@ const parseLink = (link) => {
 //  }
 }
 
-window.addEventListener ("load", myMain, false);
+window.addEventListener ("load", checkoutLogic, false);
 
-function myMain (evt) {
+function checkoutLogic (evt) {
 
     // Log url of current webpage
     console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", parseLink(window.location.href));
-    let sideWidth = document.getElementById('related').offsetWidth;
-    setTimeout(() => {
-      console.log("Wait padding",document.defaultView.getComputedStyle(document.getElementById('secondary'), null).getPropertyValue('padding-right'))
-      console.log("Wait width",document.getElementById('related').offsetWidth);
-    }, 3000);
-    console.log("Sidebar width: ",sideWidth);
 
-    let modalDialogParentDiv = document.createElement("div");
-    // Make the width the width of 'secondary' and right attribute = computed padding right of 'secondary'
-    modalDialogParentDiv.setAttribute("style","position: absolute; width: 402px; border: 1px solid rgb(51, 102, 153); padding-right: 24px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 149px; right: 0;");
-    document.body.appendChild(modalDialogParentDiv);
+    // append at 5 remove at 20
+
+    var start = 5;
+    var end = 20;
+    var showing = false;
+
+    const interval = setInterval(function() {
+
+        let currentTime = document.getElementsByTagName('video')[0].currentTime;
+        console.log("The current time in seconds is:", currentTime);
+
+        if (currentTime > start && currentTime < end) {
+          if (!showing) {
+            showing = true
+            console.log("Begin showing");
+          }
+          console.log("showing");
+        } else if (showing) {
+          console.log("removing");
+          showing = false;
+        }
+
+     }, 2000);
+
+     // Generated div
+//    let productPanel = document.createElement("div");
+//    productPanel.setAttribute("style","position: absolute; width: 402px; border: 1px solid rgb(51, 102, 153); margin-right: 24px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 149px; right: 0;");
+//    document.body.appendChild(productPanel);
 
     // Communicate with background file by sending a message
     chrome.runtime.sendMessage(
