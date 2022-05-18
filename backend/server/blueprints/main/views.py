@@ -3,7 +3,7 @@ from backend.server.blueprints.main.models import Video, Product
 from flask_cors import CORS
 
 main = Blueprint('main', __name__, template_folder='templates')
-CORS(main, origins="http://localhost:3000")
+# CORS(main, origins=["http://localhost:3000","https://www.youtube.com/"])
 
 
 @main.route('/test', methods=['GET'])
@@ -17,7 +17,12 @@ def getVideoBySite(site, siteId):
     try:
         video = Video.query.filter(Video.site == site.lower(), Video.siteId == siteId).first()
         if video is not None:
-            return make_response(jsonify({"Data": video.json()}), 200)
+            resp = make_response(jsonify({"Data": video.json()}), 200)
+            # TODO make a wrapper so that these headers are on every resonse
+            resp.headers['Access-Control-Allow-Origin'] = '*'
+            resp.headers['Content-Type'] = 'application/json'
+            print(resp.headers)
+            return resp
 
     except:
         return make_response(jsonify({"Error": "Error during fetch"}), 500)

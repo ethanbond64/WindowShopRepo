@@ -46,10 +46,15 @@ function checkoutLogic (evt) {
     productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 10px; right: 10px;");
 
     if (videoId != null) {
+
+    fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'no-cors'})
+        .then(response => response.json())
+        .then(data => console.log("Server Payload: ",data));
+
         const interval = setInterval(function() {
 
             let currentTime = document.getElementsByTagName('video')[0].currentTime;
-            console.log("The current time in seconds is:", currentTime);
+//            console.log("The current time in seconds is:", currentTime);
 
             if (currentTime > start && currentTime < end) {
               if (!showing) {
