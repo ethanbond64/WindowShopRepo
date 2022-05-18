@@ -41,6 +41,10 @@ function checkoutLogic (evt) {
     var end = 20;
     var showing = false;
 
+     // Generated div
+    let productPanel = document.createElement("div");
+    productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+
     if (videoId != null) {
         const interval = setInterval(function() {
 
@@ -49,22 +53,19 @@ function checkoutLogic (evt) {
 
             if (currentTime > start && currentTime < end) {
               if (!showing) {
-                showing = true
                 console.log("Begin showing");
+                document.body.appendChild(productPanel);
+                showing = true
               }
               console.log("showing");
             } else if (showing) {
               console.log("removing");
+              productPanel.remove();
               showing = false;
             }
 
          }, 2000);
     }
-
-     // Generated div
-    let productPanel = document.createElement("div");
-    productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 10px; right: 10px;");
-    document.body.appendChild(productPanel);
 
     // Communicate with background file by sending a message
     chrome.runtime.sendMessage(
