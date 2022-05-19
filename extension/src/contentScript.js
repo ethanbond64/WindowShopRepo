@@ -47,7 +47,7 @@ function checkoutLogic (evt) {
 
     if (videoId != null) {
 
-    fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'no-cors'})
+    fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'cors'})
         .then(response => response.json())
         .then(data => console.log("Server Payload: ",data));
 
