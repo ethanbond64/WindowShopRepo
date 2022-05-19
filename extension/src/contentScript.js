@@ -28,7 +28,7 @@ const parseLink = (link) => {
 
 window.addEventListener ("load", checkoutLogic, false);
 
-function checkoutLogic (evt) {
+async function checkoutLogic (evt) {
 
     let videoId = parseLink(window.location.href);
 
@@ -37,24 +37,33 @@ function checkoutLogic (evt) {
 
     // append at 5 remove at 20
 
-    var start = 5;
-    var end = 20;
+//    var start = 5;
+//    var end = 20;
     var showing = false;
 
      // Generated div
     let productPanel = document.createElement("div");
-    productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 2001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+    productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
 
     if (videoId != null) {
 
-    fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'cors'})
-        .then(response => response.json())
-        .then(data => console.log("Server Payload: ",data));
+        let data = await fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'cors'})
+            .then(response => response.json())
+            .then(payload => payload['Data']);
+
+        console.log("Fetch results: ", data);
+
+        let product = data['products'].at(0);
+        console.log("Product", product);
+
+        var start = parseInt(product['timeEnter']);
+        var end = parseInt(product['timeExit']);
+
+        productPanel.innerHTML = product['name'];
 
         const interval = setInterval(function() {
 
             let currentTime = document.getElementsByTagName('video')[0].currentTime;
-//            console.log("The current time in seconds is:", currentTime);
 
             if (currentTime > start && currentTime < end) {
               if (!showing) {
