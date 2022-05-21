@@ -5,6 +5,7 @@ import './index.css';
 import Navbar from './Navbar';
 import history from './History';
 import App from './App';
+import ProductForm from './ProductForm'
 import reportWebVitals from './reportWebVitals';
 
 function Routing() {
@@ -14,8 +15,8 @@ function Routing() {
         <Navbar />
         {/* <App /> */}
         <Routes>
-          <Route path="/" element={App} />
-          {/* <Route exact path="/create"><TODO /> </Route> */}
+          <Route path="/" element={<App />} />
+          <Route path="/create" element={<ProductForm />} />
         </Routes>
       </div>
     </Router>
