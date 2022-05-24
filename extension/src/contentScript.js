@@ -26,6 +26,13 @@ const parseLink = (link) => {
   }
 }
 
+const pauseCurrentVideo = () => {
+  let video = document.createElement.querySelector('video');
+  if (video != null) {
+    video.pause();
+  }
+}
+
 // const injectScript = (url) => {
 //   var script = document.createElement("script");
 //   script.src = url;
