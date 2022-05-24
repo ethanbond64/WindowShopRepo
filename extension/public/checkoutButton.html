@@ -5,9 +5,5 @@
             id: "checkout_7353b0382f3733641e101d0b2eefeb95"
         });
         checkout.displayCheckout();
-    let video = document.querySelector("video");
-    if (video != null) {
-        video.pause();
-    }
-
+    window.dispatchEvent(new Event("extensionCheckoutBegin"));
  })();'>Buy Now</button>

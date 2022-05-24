@@ -27,17 +27,17 @@ const parseLink = (link) => {
 }
 
 const pauseCurrentVideo = () => {
-  let video = document.createElement.querySelector('video');
+  let video = document.querySelector('video');
   if (video != null) {
     video.pause();
   }
 }
 
-// const injectScript = (url) => {
-//   var script = document.createElement("script");
-//   script.src = url;
-//   document.head.appendChild(script);
-// }
+window.addEventListener("extensionCheckoutBegin", () => {
+  console.log("Ethan event received");
+  pauseCurrentVideo();
+  document.getElementById('rapyd-checkout').style.width = "550px";
+});
 
 const parser = new DOMParser();
 
