@@ -12,97 +12,113 @@
 // See https://developer.chrome.com/extensions/content_scripts
 
 const parseLink = (link) => {
-//    return link.includes("youtube.com/watch?v=") ? link.split("?v=")[1].split("&")[0] : "";
+  //    return link.includes("youtube.com/watch?v=") ? link.split("?v=")[1].split("&")[0] : "";
 
-  switch(true) {
+  switch (true) {
     case link.includes("youtube.com/watch?v="):
-        return link.split("?v=")[1].split("&")[0];
+      return link.split("?v=")[1].split("&")[0];
     case link.includes("vimeo.com"):
-        return null;
+      return null;
     case link.includes("netflix.com"):
-        return null;
+      return null;
     default:
-        return null;
+      return null;
   }
 }
 
-window.addEventListener ("load", checkoutLogic, false);
+// const injectScript = (url) => {
+//   var script = document.createElement("script");
+//   script.src = url;
+//   document.head.appendChild(script);
+// }
 
-async function checkoutLogic (evt) {
+const parser = new DOMParser();
 
-    let videoId = parseLink(window.location.href);
+window.addEventListener("load", checkoutLogic, false);
 
-    // Log url of current webpage
-    console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:",videoId);
+async function checkoutLogic(evt) {
 
-    // append at 5 remove at 20
+  // injectScript("https://sandboxcheckouttoolkit.rapyd.net");
 
-//    var start = 5;
-//    var end = 20;
-    var showing = false;
+  let videoId = parseLink(window.location.href);
 
-     // Generated div
-    let productPanel = document.createElement("div");
-    productPanel.setAttribute("style","position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+  // Log url of current webpage
+  console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", videoId);
 
-    if (videoId != null) {
+  // append at 5 remove at 20
 
-        let data = await fetch('http://localhost:8000/fetch/video/youtube/'+videoId, { mode: 'cors'})
-            .then(response => response.json())
-            .then(payload => payload['Data']);
+  //    var start = 5;
+  //    var end = 20;
+  var showing = false;
 
-        console.log("Fetch results: ", data);
+  // Generated div
+  let productPanel = document.createElement("div");
+  productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+  productPanel.id = "rapyd-checkout";
 
-        let product = data['products'].at(0);
-        console.log("Product", product);
+  let rapydScript = document.createElement("script");
+  rapydScript.type = 'text/javascript';
+  rapydScript.src = "https://sandboxcheckouttoolkit.rapyd.net";
 
-        var start = parseInt(product['timeEnter']);
-        var end = parseInt(product['timeExit']);
+  if (videoId != null) {
 
-        productPanel.innerHTML = product['name'];
+    let data = await fetch('http://localhost:8000/fetch/video/youtube/' + videoId, { mode: 'cors' })
+      .then(response => response.json())
+      .then(payload => payload['Data']);
 
-        const interval = setInterval(function() {
+    console.log("Fetch results: ", data);
 
-            let currentTime = document.getElementsByTagName('video')[0].currentTime;
+    let product = data['products'].at(0);
+    console.log("Product", product);
 
-            if (currentTime > start && currentTime < end) {
-              if (!showing) {
-                console.log("Begin showing");
-                document.body.appendChild(productPanel);
-                showing = true
-              }
-              console.log("showing");
-            } else if (showing) {
-              console.log("removing");
-              productPanel.remove();
-              showing = false;
-            }
+    var start = parseInt(product['timeEnter']);
+    var end = parseInt(product['timeExit']);
 
-         }, 2000);
+    // productPanel.innerHTML = product['name'];
+
+    const interval = setInterval(function () {
+
+      let currentTime = document.getElementsByTagName('video')[0].currentTime;
+
+      if (currentTime > start && currentTime < end) {
+        if (!showing) {
+          console.log("Begin showing");
+          document.head.appendChild(rapydScript);
+          document.body.appendChild(productPanel);
+          showing = true
+        }
+        console.log("showing");
+      } else if (showing) {
+        console.log("removing");
+        productPanel.remove();
+        showing = false;
+      }
+
+    }, 2000);
+  }
+
+  // Communicate with background file by sending a message
+  chrome.runtime.sendMessage(
+    {
+      type: 'GREETINGS',
+      payload: {
+        message: 'Hello, my name is Con. I am from ContentScript.',
+      },
+    },
+    response => {
+      console.log(response.message);
+    }
+  );
+
+  // Listen for message
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.type === 'COUNT') {
+      console.log(`Current count is ${request.payload.count}`);
     }
 
-    // Communicate with background file by sending a message
-    chrome.runtime.sendMessage(
-      {
-        type: 'GREETINGS',
-        payload: {
-          message: 'Hello, my name is Con. I am from ContentScript.',
-        },
-      },
-      response => {
-        console.log(response.message);
-      }
-    );
-
-    // Listen for message
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.type === 'COUNT') {
-        console.log(`Current count is ${request.payload.count}`);
-      }
-
-      // Send an empty response
-      // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-      sendResponse({});
-      return true;
-    });
+    // Send an empty response
+    // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
+    sendResponse({});
+    return true;
+  });
 }

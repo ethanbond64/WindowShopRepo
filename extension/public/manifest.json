@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Extension",
   "version": "0.1.0",
   "description": "Video Checkout",
@@ -17,7 +17,11 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://sandboxcheckouttoolkit.rapyd.net/*"
   ],
   "content_scripts": [
     {
@@ -27,6 +31,16 @@
       "run_at": "document_idle",
       "js": [
         "contentScript.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "checkout.html"
+      ],
+      "matches": [
+        "<all_urls>"
       ]
     }
   ]
