@@ -31,6 +31,7 @@
     }
   ],
   "web_accessible_resources": [
-    "checkout.html"
+    "checkout.html",
+    "checkoutButton.html"
   ]
 }

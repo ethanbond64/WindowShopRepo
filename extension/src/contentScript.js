@@ -34,6 +34,12 @@ const parseLink = (link) => {
 
 const parser = new DOMParser();
 
+let rapydScript = document.createElement("script");
+rapydScript.type = 'text/javascript';
+rapydScript.src = "https://sandboxcheckouttoolkit.rapyd.net";
+document.head.appendChild(rapydScript);
+
+
 window.addEventListener("load", checkoutLogic, false);
 
 async function checkoutLogic(evt) {
@@ -56,9 +62,7 @@ async function checkoutLogic(evt) {
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
   productPanel.id = "rapyd-checkout";
 
-  let rapydScript = document.createElement("script");
-  rapydScript.type = 'text/javascript';
-  rapydScript.src = "https://sandboxcheckouttoolkit.rapyd.net";
+  fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
 
   if (videoId != null) {
 
@@ -83,7 +87,6 @@ async function checkoutLogic(evt) {
       if (currentTime > start && currentTime < end) {
         if (!showing) {
           console.log("Begin showing");
-          document.head.appendChild(rapydScript);
           document.body.appendChild(productPanel);
           showing = true
         }
