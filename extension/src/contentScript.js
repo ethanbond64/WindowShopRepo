@@ -58,10 +58,6 @@ async function checkoutLogic(evt) {
   // Log url of current webpage
   console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", videoId);
 
-  // append at 5 remove at 20
-
-  //    var start = 5;
-  //    var end = 20;
   var showing = false;
 
   // Generated div
@@ -69,6 +65,11 @@ async function checkoutLogic(evt) {
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
   productPanel.id = "rapyd-checkout";
 
+  let productTitle = document.createElement("h1");
+  productTitle.style.color = "black";
+  productTitle.id = "productTitle";
+
+  productPanel.appendChild(productTitle);
   fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
 
   if (videoId != null) {
@@ -85,7 +86,7 @@ async function checkoutLogic(evt) {
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    // productPanel.innerHTML = product['name'];
+    productTitle.innerHTML = product['name'];
 
     const interval = setInterval(function () {
 
@@ -97,14 +98,14 @@ async function checkoutLogic(evt) {
           document.body.appendChild(productPanel);
           showing = true
         }
-        console.log("showing");
+
       } else if (showing) {
         console.log("removing");
         productPanel.remove();
         showing = false;
       }
 
-    }, 2000);
+    }, 1000);
   }
 
   // Communicate with background file by sending a message

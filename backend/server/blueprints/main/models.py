@@ -12,6 +12,7 @@ class Video(BaseModel, db.Model):
     name = db.Column(db.String(64))
     site = db.Column(db.String(64))
     siteId = db.Column(db.String(64))
+    thumbnail = db.Column(db.String(256))
 
     # Override to include product list
     def json(self):
@@ -36,4 +37,9 @@ class Product(BaseModel, db.Model):
     # Time in seconds when the product first leaves the screen
     timeExit = db.Column(db.Integer)
 
-    # TODO add checkout related fields
+    # Rapyd checkout id used when we go to embed
+    checkoutId = db.Column(db.String(64))
+
+    # Product Image URL
+    imgUrl = db.Column(db.String(256))
+    
