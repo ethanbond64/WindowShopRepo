@@ -12,16 +12,12 @@
   "background": {
     "service_worker": "background.js"
   },
-  "action": {
+  "browser_action": {
     "default_title": "Extension",
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage",
-    "scripting"
-  ],
-  "host_permissions": [
-    "https://sandboxcheckouttoolkit.rapyd.net/*"
+    "storage"
   ],
   "content_scripts": [
     {
@@ -35,13 +31,6 @@
     }
   ],
   "web_accessible_resources": [
-    {
-      "resources": [
-        "checkout.html"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
+    "checkout.html"
   ]
 }
