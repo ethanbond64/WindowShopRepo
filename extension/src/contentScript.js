@@ -1,37 +1,8 @@
 'use strict';
 
-// Content script file will run in the context of web page.
-// With content script you can manipulate the web pages using
-// Document Object Model (DOM).
-// You can also pass information to the parent extension.
+window.addEventListener('productOnScreen', () => console.log('Show now'));
 
-// We execute this script by making an entry in manifest.json file
-// under `content_scripts` property
-
-// For more information on Content Scripts,
-// See https://developer.chrome.com/extensions/content_scripts
-
-const parseLink = (link) => {
-  //    return link.includes("youtube.com/watch?v=") ? link.split("?v=")[1].split("&")[0] : "";
-
-  switch (true) {
-    case link.includes("youtube.com/watch?v="):
-      return link.split("?v=")[1].split("&")[0];
-    case link.includes("vimeo.com"):
-      return null;
-    case link.includes("netflix.com"):
-      return null;
-    default:
-      return null;
-  }
-}
-
-const pauseCurrentVideo = () => {
-  let video = document.querySelector('video');
-  if (video != null) {
-    video.pause();
-  }
-}
+window.addEventListener('productOffScreen', () => console.log('Hide now'));
 
 window.addEventListener("extensionCheckoutBegin", () => {
   console.log("Ethan event received");
@@ -39,24 +10,15 @@ window.addEventListener("extensionCheckoutBegin", () => {
   document.getElementById('rapyd-checkout').style.width = "550px";
 });
 
-const parser = new DOMParser();
-
-let rapydScript = document.createElement("script");
-rapydScript.type = 'text/javascript';
-rapydScript.src = "https://sandboxcheckouttoolkit.rapyd.net";
-document.head.appendChild(rapydScript);
-
-
 window.addEventListener("load", checkoutLogic, false);
 
-async function checkoutLogic(evt) {
+async function checkoutLogic() {
 
-  // injectScript("https://sandboxcheckouttoolkit.rapyd.net");
-
-  let videoId = parseLink(window.location.href);
+  injectRapyd();
 
   // Log url of current webpage
-  console.log("Ethan's event. Current url is:", window.location.href, "Video ID is:", videoId);
+  let videoId = parseLink(window.location.href);
+  console.log("Current url is:", window.location.href, "Video ID is:", videoId);
 
   var showing = false;
 
@@ -94,12 +56,14 @@ async function checkoutLogic(evt) {
 
       if (currentTime > start && currentTime < end) {
         if (!showing) {
+          window.dispatchEvent(new Event('productOnScreen'));
           console.log("Begin showing");
           document.body.appendChild(productPanel);
           showing = true
         }
 
       } else if (showing) {
+        window.dispatchEvent(new Event('productOffScreen'));
         console.log("removing");
         productPanel.remove();
         showing = false;
@@ -132,4 +96,48 @@ async function checkoutLogic(evt) {
     sendResponse({});
     return true;
   });
+}
+
+const parser = new DOMParser();
+
+const injectRapyd = () => {
+  let rapydScript = document.createElement("script");
+  rapydScript.type = 'text/javascript';
+  rapydScript.src = "https://sandboxcheckouttoolkit.rapyd.net";
+  document.head.appendChild(rapydScript);
+}
+
+const parseLink = (link) => {
+  switch (true) {
+    case link.includes("youtube.com/watch?v="):
+      return link.split("?v=")[1].split("&")[0];
+    case link.includes("vimeo.com"):
+      return null;
+    case link.includes("netflix.com"):
+      return null;
+    default:
+      return null;
+  }
+}
+
+const pauseCurrentVideo = () => {
+  let video = document.querySelector('video');
+  if (video != null) {
+    video.pause();
+  }
+}
+
+const createCheckoutBox = () => {
+  let productPanel = document.createElement("div");
+  productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+  productPanel.id = "rapyd-checkout";
+
+  let productTitle = document.createElement("h1");
+  productTitle.style.color = "black";
+  productTitle.id = "productTitle";
+
+  productPanel.appendChild(productTitle);
+  fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
+
+  return productPanel;
 }

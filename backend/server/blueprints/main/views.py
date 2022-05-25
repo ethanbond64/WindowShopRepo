@@ -33,11 +33,9 @@ def getVideoBySite(site, siteId):
 @main.route('/create/video', methods=['POST'])
 def createVideo():
 
-    print(request.get_json())
     try:
         data = request.get_json()
 
-        print(data)
         if data.get('name') is not None and data.get('site') is not None and data.get('siteId') is not None:
             video = Video(**data).save()
             return make_response(jsonify({"Data": video.json()}), 200)
