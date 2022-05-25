@@ -1,25 +1,12 @@
 'use strict';
 
-// window.addEventListener('productOnScreen', () => console.log('Show now'));
-
-// window.addEventListener('productOffScreen', () => console.log('Hide now'));
-
-window.addEventListener("extensionCheckoutBegin", () => {
-  console.log("Ethan event received");
-  pauseCurrentVideo();
-  document.getElementById('rapyd-checkout').style.width = "550px";
-});
-
 window.addEventListener("load", checkoutLogic, false);
 
-async function checkoutLogic() {
+const checkoutLogic = async () => {
 
   injectRapyd();
 
-  // Log url of current webpage
   let siteData = parseLink(window.location.href);
-
-  // var showing = false;
 
   if (siteData.site != null && siteData.siteId != null) {
 
@@ -31,17 +18,31 @@ async function checkoutLogic() {
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    // Generated div
     let productPanel = createCheckoutBox(product['name']);
 
+    //
+    // Listener to show the product window
+    //
     window.addEventListener('productOnScreen', () => {
       document.body.appendChild(productPanel);
-      console.log('Show now');
+      console.log('Showing product now');
     });
 
+    //
+    // Listener to hide the product window
+    //
     window.addEventListener('productOffScreen', () => {
       productPanel.remove();
-      console.log('Hide now');
+      console.log('Hiding product now');
+    });
+
+    //
+    // Listener to go to checkout
+    //
+    window.addEventListener("extensionCheckoutBegin", () => {
+      pauseCurrentVideo();
+      productPanel.style.width = "550px";
+      console.log("Proceed to checkout");
     });
 
     pollVideo(start, end, 1000);
