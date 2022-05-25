@@ -1,8 +1,8 @@
 'use strict';
 
-window.addEventListener('productOnScreen', () => console.log('Show now'));
+// window.addEventListener('productOnScreen', () => console.log('Show now'));
 
-window.addEventListener('productOffScreen', () => console.log('Hide now'));
+// window.addEventListener('productOffScreen', () => console.log('Hide now'));
 
 window.addEventListener("extensionCheckoutBegin", () => {
   console.log("Ethan event received");
@@ -19,19 +19,7 @@ async function checkoutLogic() {
   // Log url of current webpage
   let siteData = parseLink(window.location.href);
 
-  var showing = false;
-
-  // Generated div
-  let productPanel = document.createElement("div");
-  productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
-  productPanel.id = "rapyd-checkout";
-
-  let productTitle = document.createElement("h1");
-  productTitle.style.color = "black";
-  productTitle.id = "productTitle";
-
-  productPanel.appendChild(productTitle);
-  fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
+  // var showing = false;
 
   if (siteData.site != null && siteData.siteId != null) {
 
@@ -39,36 +27,24 @@ async function checkoutLogic() {
       .then(response => response.json())
       .then(payload => payload['Data']);
 
-    console.log("Fetch results: ", data);
-
     let product = data['products'].at(0);
-    console.log("Product", product);
-
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    productTitle.innerHTML = product['name'];
+    // Generated div
+    let productPanel = createCheckoutBox(product['name']);
 
-    const interval = setInterval(function () {
+    window.addEventListener('productOnScreen', () => {
+      document.body.appendChild(productPanel);
+      console.log('Show now');
+    });
 
-      let currentTime = document.getElementsByTagName('video')[0].currentTime;
+    window.addEventListener('productOffScreen', () => {
+      productPanel.remove();
+      console.log('Hide now');
+    });
 
-      if (currentTime > start && currentTime < end) {
-        if (!showing) {
-          window.dispatchEvent(new Event('productOnScreen'));
-          console.log("Begin showing");
-          document.body.appendChild(productPanel);
-          showing = true
-        }
-
-      } else if (showing) {
-        window.dispatchEvent(new Event('productOffScreen'));
-        console.log("removing");
-        productPanel.remove();
-        showing = false;
-      }
-
-    }, 1000);
+    pollVideo(start, end, 1000);
   }
 }
 
@@ -126,6 +102,31 @@ const parseId = (link) => {
 }
 
 //
+// begin polling for the video's timestamp
+//
+const pollVideo = (start, end, rate) => {
+
+  let showing = false;
+
+  return setInterval(function () {
+
+    let currentTime = document.getElementsByTagName('video')[0].currentTime;
+
+    if (currentTime > start && currentTime < end) {
+      if (!showing) {
+        window.dispatchEvent(new Event('productOnScreen'));
+        showing = true
+      }
+
+    } else if (showing) {
+      window.dispatchEvent(new Event('productOffScreen'));
+      showing = false;
+    }
+
+  }, rate);
+}
+
+//
 // Pause any video elements in the current frame
 //
 const pauseCurrentVideo = () => {
@@ -138,13 +139,14 @@ const pauseCurrentVideo = () => {
 //
 // Generate the code for the checkout box
 //
-const createCheckoutBox = () => {
+const createCheckoutBox = (title) => {
   let productPanel = document.createElement("div");
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
   productPanel.id = "rapyd-checkout";
 
   let productTitle = document.createElement("h1");
   productTitle.style.color = "black";
+  productTitle.innerHTML = title;
   productTitle.id = "productTitle";
 
   productPanel.appendChild(productTitle);
