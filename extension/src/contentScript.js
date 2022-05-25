@@ -17,8 +17,7 @@ async function checkoutLogic() {
   injectRapyd();
 
   // Log url of current webpage
-  let videoId = parseLink(window.location.href);
-  console.log("Current url is:", window.location.href, "Video ID is:", videoId);
+  let siteData = parseLink(window.location.href);
 
   var showing = false;
 
@@ -34,9 +33,9 @@ async function checkoutLogic() {
   productPanel.appendChild(productTitle);
   fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
 
-  if (videoId != null) {
+  if (siteData.site != null && siteData.siteId != null) {
 
-    let data = await fetch('http://localhost:8000/fetch/video/youtube/' + videoId, { mode: 'cors' })
+    let data = await fetch('http://localhost:8000/fetch/video/' + siteData.site + '/' + siteData.siteId, { mode: 'cors' })
       .then(response => response.json())
       .then(payload => payload['Data']);
 
@@ -71,35 +70,16 @@ async function checkoutLogic() {
 
     }, 1000);
   }
-
-  // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Con. I am from ContentScript.',
-      },
-    },
-    response => {
-      console.log(response.message);
-    }
-  );
-
-  // Listen for message
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === 'COUNT') {
-      console.log(`Current count is ${request.payload.count}`);
-    }
-
-    // Send an empty response
-    // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-    sendResponse({});
-    return true;
-  });
 }
 
+//
+// Parser used to inject code from html files
+//
 const parser = new DOMParser();
 
+//
+// Inject the Rapyd Checkout Toolkit dependencies into the current page
+//
 const injectRapyd = () => {
   let rapydScript = document.createElement("script");
   rapydScript.type = 'text/javascript';
@@ -107,7 +87,32 @@ const injectRapyd = () => {
   document.head.appendChild(rapydScript);
 }
 
+//
+// Parse a url into a sitename and an Id
+//
 const parseLink = (link) => {
+  let siteData = {
+    "site": parseSite(link),
+    "siteId": parseId(link)
+  };
+  console.log("Current site is:", siteData.site, "Video ID is:", siteData.siteId);
+  return siteData;
+}
+
+//
+// Pase the site portion of the URL
+//
+const parseSite = (link) => {
+  if (link.includes("youtube.com")) {
+    return "youtube";
+  }
+  return null;
+}
+
+//
+// Parse the Id portion of the URL
+//
+const parseId = (link) => {
   switch (true) {
     case link.includes("youtube.com/watch?v="):
       return link.split("?v=")[1].split("&")[0];
@@ -120,6 +125,9 @@ const parseLink = (link) => {
   }
 }
 
+//
+// Pause any video elements in the current frame
+//
 const pauseCurrentVideo = () => {
   let video = document.querySelector('video');
   if (video != null) {
@@ -127,6 +135,9 @@ const pauseCurrentVideo = () => {
   }
 }
 
+//
+// Generate the code for the checkout box
+//
 const createCheckoutBox = () => {
   let productPanel = document.createElement("div");
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
