@@ -1,8 +1,6 @@
 'use strict';
 
-window.addEventListener("load", checkoutLogic, false);
-
-const checkoutLogic = async () => {
+window.addEventListener("load", async () => {
 
   injectRapyd();
 
@@ -18,7 +16,7 @@ const checkoutLogic = async () => {
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    let productPanel = createCheckoutBox(product['name']);
+    let productPanel = createCheckoutBox(product['name'], product['checkoutId']);
 
     //
     // Listener to show the product window
@@ -42,12 +40,13 @@ const checkoutLogic = async () => {
     window.addEventListener("extensionCheckoutBegin", () => {
       pauseCurrentVideo();
       productPanel.style.width = "550px";
+      productPanel.style.height = "750px";
       console.log("Proceed to checkout");
     });
 
     pollVideo(start, end, 1000);
   }
-}
+});
 
 //
 // Parser used to inject code from html files
@@ -140,7 +139,7 @@ const pauseCurrentVideo = () => {
 //
 // Generate the code for the checkout box
 //
-const createCheckoutBox = (title) => {
+const createCheckoutBox = (title, checkoutId) => {
   let productPanel = document.createElement("div");
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
   productPanel.id = "rapyd-checkout";
@@ -151,7 +150,10 @@ const createCheckoutBox = (title) => {
   productTitle.id = "productTitle";
 
   productPanel.appendChild(productTitle);
-  fetch(chrome.runtime.getURL('/checkoutButton.html')).then(r => r.text()).then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
+  fetch(chrome.runtime.getURL('/checkoutButton.html'))
+    .then(r => r.text())
+    .then(t => t.replace('%checkoutId%', checkoutId))
+    .then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
 
   return productPanel;
 }

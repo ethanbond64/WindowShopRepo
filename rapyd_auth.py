@@ -30,11 +30,18 @@ salt = "".join(choice(allchar)for x in range(randint(min_char, max_char)))
 d = datetime.utcnow()
 timestamp = calendar.timegm(d.utctimetuple())
 
-access_key = os.getenv('RAPYD_KEY')        # The access key received from Rapyd.
-secret_key = os.getenv('RAPYD_SECRET')        # Never transmit the secret key by itself.
+access_key = os.getenv('RAPYD_KEY')
+secret_key = os.getenv('RAPYD_SECRET')
 
-body = {"amount":100,"country":"US","currency":"USD"}                             # JSON body goes here. Always empty string for GET; 
-                                      # strip nonfunctional whitespace.
+body = {
+    "amount":100,
+    "country":"US",
+    "currency":"USD",
+    "payment_method_types_include": [
+        "us_mastercard_card",
+        "us_visa_card"
+    ]
+}                  
 
 if http_method == 'get':
     body_to_sign = '' 
