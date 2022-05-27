@@ -1,6 +1,14 @@
+import os
+from flask import url_for
+from requests import request
+from backend.server.blueprints.main.rapydUtils import getCheckoutId
 from backend.server.utils.extensions import db
 from backend.server.utils.BaseModel import BaseModel
+from sqlalchemy.dialects.postgresql import JSON
 
+WEB_PREFIX = "http://"
+SERVER_NAME = os.getenv("SERVER_NAME")
+UPLOAD_DIR = "/uploads/"
 
 class Video(BaseModel, db.Model):
 
@@ -39,7 +47,15 @@ class Product(BaseModel, db.Model):
 
     # Rapyd checkout id used when we go to embed
     checkoutId = db.Column(db.String(64))
+    checkoutJson = db.Column(JSON)
 
     # Product Image URL
     imgUrl = db.Column(db.String(256))
     
+    def json(self):
+        data = super().json()
+        
+        # Populate checkoutId with brand new authenticated id 
+        data["checkoutId"] = getCheckoutId(data['checkoutJson'])
+        data["imgUrl"] = WEB_PREFIX + SERVER_NAME + UPLOAD_DIR + data["imgUrl"]
+        return data

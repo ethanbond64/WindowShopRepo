@@ -1,5 +1,7 @@
-from flask import request, Blueprint, jsonify, make_response, url_for
+import os
+from flask import request, Blueprint, jsonify, make_response, send_from_directory, url_for, current_app
 from backend.server.blueprints.main.models import Video, Product
+# from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
 main = Blueprint('main', __name__, template_folder='templates')
@@ -63,3 +65,20 @@ def createProduct(site, siteId):
         return make_response(jsonify({"Error": "Error during save attempt"}), 500)
 
     return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
+
+
+# @main.route('/upload', methods-['POST'])
+# def upload():
+#     uploaded_file = request.files['file']
+#     filename = secure_filename(uploaded_file.filename)
+#     print(filename)
+#     if filename != '':
+#         file_ext = os.path.splitext(filename)[1]
+#         if file_ext not in current_app.config['UPLOAD_EXTENSIONS']:# or file_ext != validate_image(uploaded_file.stream):
+#             make_response(jsonify({"Error": ""}), 400)
+#         uploaded_file.save(os.path.join(current_app.config['UPLOAD_PATH'], filename))
+#     return make_response(jsonify({"filename":filename}))
+
+@main.route('/uploads/<filename>', methods=['GET'])
+def readUpload(filename):
+    return send_from_directory('static/uploads', filename)

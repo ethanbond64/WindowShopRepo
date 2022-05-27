@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    let productPanel = createCheckoutBox(product['name'], product['checkoutId']);
+    let productPanel = createCheckoutBox(product['name'], product['imgUrl'], product['checkoutId']);
 
     //
     // Begin watching for timestamps
@@ -191,7 +191,7 @@ const sendAlert = (color, message) => {
 //
 // Generate the code for the checkout box
 //
-const createCheckoutBox = (title, checkoutId) => {
+const createCheckoutBox = (title, imgUrl, checkoutId) => {
   let productPanel = document.createElement("div");
   productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
   productPanel.id = "rapyd-checkout";
@@ -203,7 +203,7 @@ const createCheckoutBox = (title, checkoutId) => {
 
   let productImg = document.createElement("img");
   productImg.setAttribute("style", "max-height:400px; max-width: 400px; margin: auto;")
-  productImg.src = "http://localhost:8000/static/watch.jpeg";
+  productImg.src = imgUrl;
   productImg.id = "productImg";
 
   productPanel.appendChild(productTitle);

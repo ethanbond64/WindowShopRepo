@@ -73,4 +73,4 @@ else:
     x = requests.get(url, headers = headers)
 
 print(x)
-print(x.text)
+print(x.json().get('data').get('id'))
