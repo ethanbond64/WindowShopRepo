@@ -1,12 +1,14 @@
 import os
+from uuid import uuid4
 from flask import request, Blueprint, jsonify, make_response, send_from_directory, url_for, current_app
 from backend.server.blueprints.main.models import Video, Product
-# from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
 main = Blueprint('main', __name__, template_folder='templates')
 # CORS(main, origins=["http://localhost:3000","https://www.youtube.com/"])
 
+UPLOADS_ABSOLUTE_PATH = "/home/backend/server/static/uploads"
 
 @main.route('/test', methods=['GET'])
 def get_test():
@@ -67,17 +69,22 @@ def createProduct(site, siteId):
     return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
 
 
-# @main.route('/upload', methods-['POST'])
-# def upload():
-#     uploaded_file = request.files['file']
-#     filename = secure_filename(uploaded_file.filename)
-#     print(filename)
-#     if filename != '':
-#         file_ext = os.path.splitext(filename)[1]
-#         if file_ext not in current_app.config['UPLOAD_EXTENSIONS']:# or file_ext != validate_image(uploaded_file.stream):
-#             make_response(jsonify({"Error": ""}), 400)
-#         uploaded_file.save(os.path.join(current_app.config['UPLOAD_PATH'], filename))
-#     return make_response(jsonify({"filename":filename}))
+@main.route('/upload', methods=['POST'])
+def upload():
+
+    uploaded_file = request.files['file']
+    filename = uploaded_file.filename
+    
+    if filename != '':
+        ext = os.path.splitext(filename)[1]
+
+        if ext not in [".jpg", ".jpeg", ".png"]:
+            make_response(jsonify({"Error": "File extension not allowed"}), 400)
+
+        generated_filename = str(uuid4()) + ext
+        uploaded_file.save(os.path.join(UPLOADS_ABSOLUTE_PATH, generated_filename))
+
+    return make_response(jsonify({"filename":generated_filename}))
 
 @main.route('/uploads/<filename>', methods=['GET'])
 def readUpload(filename):

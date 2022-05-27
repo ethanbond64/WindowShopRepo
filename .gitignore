@@ -8,6 +8,10 @@
 *.env
 .env
 
+# Uploaded files 
+backend/server/static/uploads/*
+!backend/server/static/uploads/.placeholder
+
 # NPM
 /extension/node_modules
 /extension/build
