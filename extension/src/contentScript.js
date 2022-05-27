@@ -19,6 +19,11 @@ window.addEventListener("load", async () => {
     let productPanel = createCheckoutBox(product['name'], product['checkoutId']);
 
     //
+    // Begin watching for timestamps
+    //
+    const videoPoller = pollVideo(start, end, 1000);
+
+    //
     // Listener to show the product window
     //
     window.addEventListener('productOnScreen', () => {
@@ -44,7 +49,23 @@ window.addEventListener("load", async () => {
       console.log("Proceed to checkout");
     });
 
-    pollVideo(start, end, 1000);
+    //
+    // Listener for checkout success
+    //
+    window.addEventListener('onCheckoutPaymentSuccess', () => {
+      console.log("Checkout Success");
+      clearInterval(videoPoller);
+      checkoutSuccessHandler();
+    });
+
+    //
+    // Listener for checkout failure
+    //
+    window.addEventListener('onCheckoutFailure', () => {
+      console.log("Checkout Failed");
+      sendAlert("red", "Checkout Failed. Please Try Again");
+    });
+
   }
 });
 
@@ -137,6 +158,37 @@ const pauseCurrentVideo = () => {
 }
 
 //
+// Resume any video elements in the current frame
+//
+const resumeCurrentVideo = () => {
+  let video = document.querySelector('video');
+  if (video != null) {
+    video.play();
+  }
+}
+
+const checkoutSuccessHandler = () => {
+  sendAlert("green", "Checkout succeeded!");
+  setTimeout(() => {
+    document.getElementById("rapyd-checkout").remove();
+    resumeCurrentVideo();
+  }, 2500);
+}
+
+
+//
+// Helper method to send alerts
+//
+const sendAlert = (color, message) => {
+  let checkout = document.getElementById("rapyd-checkout");
+  let productTitle = document.createElement("h1");
+  productTitle.style.color = color;
+  productTitle.innerHTML = message;
+  productTitle.id = "productAlert";
+  checkout.appendChild(productTitle);
+}
+
+//
 // Generate the code for the checkout box
 //
 const createCheckoutBox = (title, checkoutId) => {
@@ -149,7 +201,13 @@ const createCheckoutBox = (title, checkoutId) => {
   productTitle.innerHTML = title;
   productTitle.id = "productTitle";
 
+  let productImg = document.createElement("img");
+  productImg.setAttribute("style", "max-height:400px; max-width: 400px; margin: auto;")
+  productImg.src = "http://localhost:8000/static/watch.jpeg";
+  productImg.id = "productImg";
+
   productPanel.appendChild(productTitle);
+  productPanel.appendChild(productImg);
   fetch(chrome.runtime.getURL('/checkoutButton.html'))
     .then(r => r.text())
     .then(t => t.replace('%checkoutId%', checkoutId))
