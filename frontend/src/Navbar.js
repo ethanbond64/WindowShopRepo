@@ -13,9 +13,6 @@ function Navbar() {
                     <Link to="/create/video">Register New Video +</Link>
                 </a>
                 <a className={`inline-block border rounded py-1 px-3 bg-indigo-900 text-white mr-4`}>
-                    <Link to="/create/product">Register New Product +</Link>
-                </a>
-                <a className={`inline-block border rounded py-1 px-3 bg-indigo-900 text-white mr-4`}>
                     Help
                 </a>
                 <div className={`inline-block border rounded py-1 px-3 bg-indigo-900 text-white mr-4`} >

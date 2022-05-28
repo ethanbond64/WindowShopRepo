@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
-
-function deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
 function convertDate(date) {
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return date.toISOString().slice(0, -1);
@@ -23,15 +18,12 @@ function ProductForm() {
     const now = new Date();
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    const [file, setFile] = useState(null);
     const [start, setStart] = useState(convertDate(now));
     const [end, setEnd] = useState(convertDate(addHours(now, 3)));
 
     function onChangeName(e) {
         setName(e.target.value);
-    }
-
-    function onChangeImg(e) {
-        setImage(e.target.value);
     }
 
     function onChangeStart(e) {
@@ -42,39 +34,60 @@ function ProductForm() {
         setEnd(e.target.value);
     }
 
-    function saveProduct() {
-        console.log("name: ", name);
-        console.log("img: ", image);
-        console.log("start: ", start);
-        console.log("end: ", end);
+    function onFileChange(e) {
+        setFile(e.target.files[0]);
+    };
 
-        fetch("http://localhost:8000/create/product/" + video_id, {
-            // mode: 'no-cors',
+    function saveProduct() {
+
+        let formData = new FormData();
+
+        formData.append("file", file);
+
+        fetch("http://localhost:8000/upload", {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "name": name,
-                "imgUrl": image,
-                "timeEnter": start,
-                "timeExit": end,
-                "checkoutJson": {
-                    "amount": 20,
-                    "country": "US",
-                    "currency": "USD",
-                    "payment_method_types_include": [
-                        "us_mastercard_card",
-                        "us_visa_card"
-                    ]
-                }
-            })
+            body: formData
         }).then(response => {
             if (response.ok) {
                 response.json().then(json => {
-                    console.log(json);
-                    window.location = "http://localhost:3000/";
+
+                    let filename = json.filename
+
+                    console.log("name: ", name);
+                    console.log("img: ", filename);
+                    console.log("start: ", start);
+                    console.log("end: ", end);
+
+                    fetch("http://localhost:8000/create/product/" + video_id, {
+                        // mode: 'no-cors',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "name": name,
+                            "imgUrl": filename,
+                            "timeEnter": start,
+                            "timeExit": end,
+                            "checkoutJson": {
+                                "amount": 20,
+                                "country": "US",
+                                "currency": "USD",
+                                "payment_method_types_include": [
+                                    "us_mastercard_card",
+                                    "us_visa_card"
+                                ]
+                            }
+                        })
+                    }).then(response => {
+                        if (response.ok) {
+                            response.json().then(json => {
+                                console.log(json);
+                                // window.location = "http://localhost:3000/";
+                            });
+                        }
+                    });
                 });
             }
         });
@@ -87,8 +100,7 @@ function ProductForm() {
                 <div className={`h-30 mt-4 mb-4`} >
                     <input className={`w-1/6 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}
                         placeholder="Product Name" onChange={onChangeName} />
-                    <input className={`w-1/6 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}
-                        placeholder="Img Name (TEMP)" onChange={onChangeImg} />
+                    <input type="file" onChange={onFileChange} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
                         onClick={saveProduct} >
                         Save
