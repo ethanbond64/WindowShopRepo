@@ -76,8 +76,6 @@ function VideoForm() {
         });
     }
 
-
-
     return (
         <div className={`mx-auto h-screen`}>
             <h1>Video Form</h1>

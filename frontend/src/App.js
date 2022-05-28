@@ -1,10 +1,32 @@
+import React, { useState, useEffect } from "react";
+import Video from "./Video";
 
 function App() {
+
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/fetch/videos", {
+      // mode: 'no-cors',
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          console.log(json);
+          setVideos(json.Data);
+        });
+      }
+    });
+  }, []);
+
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+      {videos.map((v) =>
+        <Video name={v.name} link={v.link} id={v.id} thumbnail={v.thumbnail} />
+      )}
       <footer className={`text-center`}>
       </footer>
     </div>

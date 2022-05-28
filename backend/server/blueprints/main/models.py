@@ -23,8 +23,8 @@ class Video(BaseModel, db.Model):
     thumbnail = db.Column(db.String(256))
 
     # Override to include product list
-    def json(self):
-        products = [p.json() for p in Product.query.filter(Product.videoId == self.id).all()]
+    def json(self, checkingOut):
+        products = [p.json(checkingOut) for p in Product.query.filter(Product.videoId == self.id).all()]
         data = super().json()
         data["products"] = products
         return data
@@ -52,10 +52,12 @@ class Product(BaseModel, db.Model):
     # Product Image URL
     imgUrl = db.Column(db.String(256))
     
-    def json(self):
+    def json(self, checkingOut):
         data = super().json()
         
         # Populate checkoutId with brand new authenticated id 
-        data["checkoutId"] = getCheckoutId(data['checkoutJson'])
+        if checkingOut:
+            data["checkoutId"] = getCheckoutId(data['checkoutJson'])
+            
         data["imgUrl"] = WEB_PREFIX + SERVER_NAME + UPLOAD_DIR + data["imgUrl"]
         return data

@@ -21,7 +21,7 @@ def getVideoBySite(site, siteId):
     try:
         video = Video.query.filter(Video.site == site.lower(), Video.siteId == siteId).first()
         if video is not None:
-            resp = make_response(jsonify({"Data": video.json()}), 200)
+            resp = make_response(jsonify({"Data": video.json(True)}), 200)
             # TODO make a wrapper so that these headers are on every resonse
             resp.headers['Access-Control-Allow-Origin'] = '*'
             resp.headers['Content-Type'] = 'application/json'
@@ -33,6 +33,19 @@ def getVideoBySite(site, siteId):
 
     return make_response(jsonify({"Error": "Unknown Video"}), 400)
 
+@main.route('/fetch/videos', methods=['GET'])
+def getVideos():
+
+    try:
+        videos = Video.query.all()
+        if videos is not None and videos != []:
+            resp = make_response(jsonify({"Data": [v.json(False) for v in videos]}), 200)
+            return resp
+
+    except:
+        return make_response(jsonify({"Error": "Error during fetch"}), 500)
+
+    return make_response(jsonify({"Error": "Unknown Video"}), 400)
 
 @main.route('/create/video', methods=['POST'])
 def createVideo():
@@ -43,7 +56,7 @@ def createVideo():
         data = request.get_json()
         if data.get('name') is not None and data.get('site') is not None and data.get('siteId') is not None:
             video = Video(**data).save()
-            return make_response(jsonify({"Data": video.json()}), 200)
+            return make_response(jsonify({"Data": video.json(False)}), 200)
 
     except:
         return make_response(jsonify({"Error": "Error during save attempt"}), 500)
@@ -62,7 +75,7 @@ def createProduct(site, siteId):
         if video is not None and data is not None:
             data["videoId"] = video.id
             product = Product(**data).save()
-            return make_response(jsonify({"Data": product.json()}), 200)
+            return make_response(jsonify({"Data": product.json(False)}), 200)
 
     except:
         return make_response(jsonify({"Error": "Error during save attempt"}), 500)
