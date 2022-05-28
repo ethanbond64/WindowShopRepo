@@ -60,7 +60,8 @@ function ProductForm() {
             // mode: 'no-cors',
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: formData
         }).then(response => {
@@ -76,6 +77,7 @@ function ProductForm() {
 
     return (
         <div className={`mx-auto h-screen`}>
+            <h1>Product Form</h1>
             <div className={`bg-gray-50 m-auto p-2.5 w-3/4 rounded shadow-md container h-screen`} >
                 <div className={`h-30 mt-4 mb-4`} >
                     <input className={`w-1/6 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}

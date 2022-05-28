@@ -7,6 +7,7 @@ import history from './History';
 import App from './App';
 import ProductForm from './ProductForm'
 import reportWebVitals from './reportWebVitals';
+import VideoForm from './VideoForm';
 
 function Routing() {
   return (
@@ -16,7 +17,8 @@ function Routing() {
         {/* <App /> */}
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/create" element={<ProductForm />} />
+          <Route path="/create/video" element={<VideoForm />} />
+          <Route path="/create/product" element={<ProductForm />} />
         </Routes>
       </div>
     </Router>

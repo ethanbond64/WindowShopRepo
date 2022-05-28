@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
 main = Blueprint('main', __name__, template_folder='templates')
-# CORS(main, origins=["http://localhost:3000","https://www.youtube.com/"])
+CORS(main, origins=["http://localhost:3000","https://www.youtube.com/", "*"])
 
 UPLOADS_ABSOLUTE_PATH = "/home/backend/server/static/uploads"
 
@@ -38,8 +38,9 @@ def getVideoBySite(site, siteId):
 def createVideo():
 
     try:
-        data = request.get_json()
+        print(request.get_json(), request.get_data())
 
+        data = request.get_json()
         if data.get('name') is not None and data.get('site') is not None and data.get('siteId') is not None:
             video = Video(**data).save()
             return make_response(jsonify({"Data": video.json()}), 200)
