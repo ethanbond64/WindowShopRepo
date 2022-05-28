@@ -65,11 +65,12 @@ def createVideo():
 
 
 @main.route('/create/product/<site>/<siteId>', methods=['POST'])
-def createProduct(site, siteId):
+def createProductBySite(site, siteId):
+
+    data = request.get_json()
 
     try:
         video = Video.query.filter(Video.site == site.lower(), Video.siteId == siteId).first()
-        data = request.get_json()
         # TODO validate response has required product fields
 
         if video is not None and data is not None:
@@ -82,6 +83,28 @@ def createProduct(site, siteId):
 
     return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
 
+@main.route('/create/product/<videoId>', methods=['POST'])
+def createProduct(videoId):
+    
+    data = request.get_json()
+    
+    try:
+        video = Video.query.filter(Video.id == int(videoId)).first()
+        # TODO validate response has required product fields
+        print("dbg")
+        if video is not None and data is not None:
+            print("dbg2")
+            data["videoId"] = video.id
+            print("dbg3")
+            print(data)
+            product = Product(**data).save()
+            print(product)
+            return make_response(jsonify({"Data": product.json(False)}), 200)
+
+    except:
+        return make_response(jsonify({"Error": "Error during save attempt"}), 500)
+
+    return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
 
 @main.route('/upload', methods=['POST'])
 def upload():

@@ -18,7 +18,7 @@ function Routing() {
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/create/video" element={<VideoForm />} />
-          <Route path="/create/product" element={<ProductForm />} />
+          <Route path="/create/product/:video_id" element={<ProductForm />} />
         </Routes>
       </div>
     </Router>
