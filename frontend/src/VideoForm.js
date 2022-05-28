@@ -62,6 +62,7 @@ function VideoForm() {
             },
             body: JSON.stringify({
                 "name": name,
+                "link": link,
                 "site": site,
                 "siteId": siteId,
                 "thumbnail": thumbnail

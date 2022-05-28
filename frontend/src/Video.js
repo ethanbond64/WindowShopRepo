@@ -8,20 +8,19 @@ function Video(props) {
                 {props.name}
             </div>
             <br />
-            <div className={`mt-6`} >
-                {props.link}
-            </div>
             <img src={props.thumbnail} style={{ maxHeight: 500, maxWidth: 500 }} />
             <div class={`absolute rounded-b-lg inset-x-0 bottom-0 p-2.5 bg-white h-14`}>
                 <div className={`grid grid-cols-3 gap-4`}>
-                    <a className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} href={`youtube.com`}>
+                    <a className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} href={props.link}>
                         Go to video
                     </a>
-                    <a className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} href={`localhost:8000/timebox`}>
-                        Time Auth
-                    </a>
+                    <Link to={`/create/product/${props.id}`}>
+                        <div className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} >
+                            Register a product
+                        </div>
+                    </Link>
                     <a className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} href={`localhost:8000/V1/latest/${props.id}`}>
-                        Feed
+                        TODO
                     </a>
                 </div>
             </div>

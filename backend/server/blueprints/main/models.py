@@ -18,8 +18,13 @@ class Video(BaseModel, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     name = db.Column(db.String(64))
+
+    link = db.Column(db.String(64))
+
     site = db.Column(db.String(64))
     siteId = db.Column(db.String(64))
+    
+    # Thumbnail to load
     thumbnail = db.Column(db.String(256))
 
     # Override to include product list
@@ -58,6 +63,6 @@ class Product(BaseModel, db.Model):
         # Populate checkoutId with brand new authenticated id 
         if checkingOut:
             data["checkoutId"] = getCheckoutId(data['checkoutJson'])
-            
+
         data["imgUrl"] = WEB_PREFIX + SERVER_NAME + UPLOAD_DIR + data["imgUrl"]
         return data
