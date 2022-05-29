@@ -27,6 +27,13 @@ class Video(BaseModel, db.Model):
     # Thumbnail to load
     thumbnail = db.Column(db.String(256))
 
+    # Override to delete products
+    def delete(self):
+        products = Product.query.filter(Product.videoId == self.id).all()
+        for product in products:
+            product.delete()
+        super().delete()
+
     # Override to include product list
     def json(self, checkingOut):
         products = [p.json(checkingOut) for p in Product.query.filter(Product.videoId == self.id).all()]

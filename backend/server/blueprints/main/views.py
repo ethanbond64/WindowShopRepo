@@ -101,6 +101,18 @@ def createProduct(videoId):
 
     return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
 
+@main.route('/delete/video/<videoId>')
+def deleteVideo(videoId):
+    try:
+        video = Video.query.filter(Video.id == int(videoId)).first()
+        if video is not None:
+            video.delete()
+            return make_response(jsonify({"Deleted": True}), 200)
+    except:
+        return make_response(jsonify({"Error": "Error during delete attempt"}), 500)
+
+    return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
+
 @main.route('/upload', methods=['POST'])
 def upload():
 
