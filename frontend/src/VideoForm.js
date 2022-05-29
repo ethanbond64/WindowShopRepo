@@ -85,16 +85,17 @@ function VideoForm() {
         <div className={`mx-auto h-screen`}>
             <h1>Video Form</h1>
             <div className={`bg-gray-50 m-auto p-2.5 w-3/4 rounded shadow-md container h-screen`} >
-                <div className={`h-30 mt-4 mb-4`} >
-                    <input className={`w-1/6 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}
+                <div className={`h-30 mt-4 mb-10`} >
+                    <input className={`w-1/4 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}
                         placeholder="Video Name" onChange={onChangeName} />
-                    <input className={`w-1/6 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}
-                        placeholder="Video URL" onChange={onChangeLink} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
                         onClick={saveProduct} >
                         Save
                     </button>
                 </div>
+                <input className={`w-full float-left shadow appearance-none border rounded mt-4 mb-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}
+                    placeholder="Video URL" onChange={onChangeLink} />
+                <img src={thumbnail} className={`mx-auto mt-10 max-h-80`} ></img>
             </div>
         </div>
     );
