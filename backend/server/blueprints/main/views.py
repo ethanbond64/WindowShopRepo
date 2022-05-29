@@ -91,14 +91,9 @@ def createProduct(videoId):
     try:
         video = Video.query.filter(Video.id == int(videoId)).first()
         # TODO validate response has required product fields
-        print("dbg")
         if video is not None and data is not None:
-            print("dbg2")
             data["videoId"] = video.id
-            print("dbg3")
-            print(data)
             product = Product(**data).save()
-            print(product)
             return make_response(jsonify({"Data": product.json(False)}), 200)
 
     except:

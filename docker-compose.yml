@@ -29,12 +29,12 @@ services:
 
   server:
     build: backend/.
-    command: > 
+    command: >
       gunicorn -b 0.0.0.0:8000 
         -w 4
         --access-logfile -
         --reload
-        "server.app:create_app()"
+        "backend.server.app:create_app()"
     env_file:
       - '.env'
     volumes:
