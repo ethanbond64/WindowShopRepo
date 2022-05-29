@@ -17,7 +17,7 @@ function ProductForm() {
 
     const now = new Date();
     const [name, setName] = useState("");
-    const [image, setImage] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
     const [file, setFile] = useState(null);
     const [start, setStart] = useState(convertDate(now));
     const [end, setEnd] = useState(convertDate(addHours(now, 3)));
@@ -35,14 +35,11 @@ function ProductForm() {
     }
 
     function onFileChange(e) {
-        setFile(e.target.files[0]);
-    };
-
-    function saveProduct() {
+        // setFile(e.target.files[0]);
 
         let formData = new FormData();
 
-        formData.append("file", file);
+        formData.append("file", e.target.files[0]);
 
         fetch("http://localhost:8000/upload", {
             method: 'POST',
@@ -50,44 +47,47 @@ function ProductForm() {
         }).then(response => {
             if (response.ok) {
                 response.json().then(json => {
+                    console.log(json);
+                    setImageUrl(json.filename);
+                });
+            }
+        });
+    };
 
-                    let filename = json.filename
+    function saveProduct() {
 
-                    console.log("name: ", name);
-                    console.log("img: ", filename);
-                    console.log("start: ", start);
-                    console.log("end: ", end);
+        console.log("name: ", name);
+        console.log("img: ", imageUrl);
+        console.log("start: ", start);
+        console.log("end: ", end);
 
-                    fetch("http://localhost:8000/create/product/" + video_id, {
-                        // mode: 'no-cors',
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            "name": name,
-                            "imgUrl": filename,
-                            "timeEnter": start,
-                            "timeExit": end,
-                            "checkoutJson": {
-                                "amount": 20,
-                                "country": "US",
-                                "currency": "USD",
-                                "payment_method_types_include": [
-                                    "us_mastercard_card",
-                                    "us_visa_card"
-                                ]
-                            }
-                        })
-                    }).then(response => {
-                        if (response.ok) {
-                            response.json().then(json => {
-                                console.log(json);
-                                // window.location = "http://localhost:3000/";
-                            });
-                        }
-                    });
+        fetch("http://localhost:8000/create/product/" + video_id, {
+            // mode: 'no-cors',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "name": name,
+                "imgUrl": imageUrl,
+                "timeEnter": start,
+                "timeExit": end,
+                "checkoutJson": {
+                    "amount": 20,
+                    "country": "US",
+                    "currency": "USD",
+                    "payment_method_types_include": [
+                        "us_mastercard_card",
+                        "us_visa_card"
+                    ]
+                }
+            })
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(json => {
+                    console.log(json);
+                    // window.location = "http://localhost:3000/";
                 });
             }
         });
