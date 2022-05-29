@@ -17,7 +17,8 @@ load_dotenv()
 http_method = 'post'                   # get|put|post|delete - must be lowercase
 # http_method = 'get'                   # get|put|post|delete - must be lowercase
 base_url = 'https://sandboxapi.rapyd.net'
-path = '/v1/checkout'           # Portion after the base URL. Hardkeyed for this example.
+path = '/v1/addresses'
+# path = '/v1/checkout'           # Portion after the base URL. Hardkeyed for this example.
 # path = '/v1/data/countries'   
 
 # salt: randomly generated for each request.
@@ -33,15 +34,32 @@ timestamp = calendar.timegm(d.utctimetuple())
 access_key = os.getenv('RAPYD_KEY')
 secret_key = os.getenv('RAPYD_SECRET')
 
+# body = {
+#     "amount":100,
+#     "country":"US",
+#     "currency":"USD",
+#     "payment_method_types_include": [
+#         "us_mastercard_card",
+#         "us_visa_card"
+#     ]
+# }                  
+
 body = {
-    "amount":100,
-    "country":"US",
-    "currency":"USD",
-    "payment_method_types_include": [
-        "us_mastercard_card",
-        "us_visa_card"
-    ]
-}                  
+    "name": "John Doe",
+    "line_1": "123 State Street",
+    "line_2": "Apt. 34",
+    "line_3": "",
+    "city": "Anytown",
+    "district": "",
+    "canton": "",
+    "state": "NY",
+    "country": "US",
+    "zip": "12345",
+    "phone_number": "12125559999",
+    "metadata": {
+        "merchant_defined": True
+    }
+}
 
 if http_method == 'get':
     body_to_sign = '' 
