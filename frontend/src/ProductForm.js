@@ -19,8 +19,10 @@ function ProductForm() {
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const [start, setStart] = useState(convertDate(now));
-    const [end, setEnd] = useState(convertDate(addHours(now, 3)));
+    const [start, setStart] = useState(undefined);
+    const [end, setEnd] = useState(undefined);
+    const [price, setPrice] = useState(undefined);
+    const [currency, setCurrency] = useState(undefined);
 
     function onChangeName(e) {
         setName(e.target.value);
@@ -34,8 +36,15 @@ function ProductForm() {
         setEnd(e.target.value);
     }
 
+    function onChangePrice(e) {
+        setPrice(parseFloat(e.target.value));
+    }
+
+    function onChangeCurrency(e) {
+        setCurrency(e.target.value);
+    }
+
     function onFileChange(e) {
-        // setFile(e.target.files[0]);
 
         let formData = new FormData();
 
@@ -62,6 +71,8 @@ function ProductForm() {
         console.log("img: ", image);
         console.log("start: ", start);
         console.log("end: ", end);
+        console.log("price: ", price);
+        console.log("currency: ", currency);
 
         fetch("http://localhost:8000/create/product/" + video_id, {
             // mode: 'no-cors',
@@ -76,9 +87,9 @@ function ProductForm() {
                 "timeEnter": start,
                 "timeExit": end,
                 "checkoutJson": {
-                    "amount": 20,
+                    "amount": parseFloat(price),
                     "country": "US",
-                    "currency": "USD",
+                    "currency": currency,
                     "payment_method _types_include": [
                         "us_mastercard_card",
                         "us_visa_card"
@@ -114,13 +125,13 @@ function ProductForm() {
                             <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none`}>
                                 <span className={`text-gray-500 sm:text-sm`}> $ </span>
                             </div>
-                            <input type="text" name="price" id="price" className={`focus:ring-indigo-500 focus:border-black-500 h-10 block w-full pl-7 pr-12 sm:text-sm rounded-md`} placeholder="0.00" />
+                            <input onChange={onChangePrice} type="text" name="price" id="price" className={`focus:ring-indigo-500 focus:border-black-500 h-10 block w-full pl-7 pr-12 sm:text-sm rounded-md`} placeholder="0.00" />
                             <div className={`absolute inset-y-0 right-0 flex items-center`}>
                                 <label for="currency" className={`sr-only`}>Currency</label>
-                                <select id="currency" name="currency" className={`focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
-                                    <option>USD</option>
-                                    <option>CAD</option>
-                                    <option>EUR</option>
+                                <select onChange={onChangeCurrency} id="currency" name="currency" className={`focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
+                                    <option value={"USD"}>USD</option>
+                                    <option value={"CAD"}>CAD</option>
+                                    <option value={"EUR"}>EUR</option>
                                 </select>
                             </div>
                         </div>

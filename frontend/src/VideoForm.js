@@ -32,6 +32,9 @@ function VideoForm() {
 
     const [name, setName] = useState("");
     const [link, setLink] = useState("");
+    const [site, setSite] = useState("");
+    const [siteId, setSiteId] = useState("");
+    const [thumbnail, setThumbnail] = useState("");
 
     function onChangeName(e) {
         setName(e.target.value);
@@ -39,16 +42,17 @@ function VideoForm() {
 
     function onChangeLink(e) {
         setLink(e.target.value);
+        let s = parseSite(e.target.value);
+        let sId = parseId(e.target.value)
+        let t = parseThumbnail(s, sId);
+        setSite(s);
+        setSiteId(sId);
+        setThumbnail(t);
     }
 
 
     function saveProduct() {
         console.log("name: ", name);
-
-        let site = parseSite(link);
-        let siteId = parseId(link);
-        let thumbnail = parseThumbnail(site, siteId);
-
         console.log("site: ", site);
         console.log("siteId: ", siteId);
         console.log("thumbnail: ", thumbnail);
