@@ -22,7 +22,7 @@ function ProductForm() {
     const [start, setStart] = useState(undefined);
     const [end, setEnd] = useState(undefined);
     const [price, setPrice] = useState(undefined);
-    const [currency, setCurrency] = useState(undefined);
+    const [currency, setCurrency] = useState("USD");
 
     function onChangeName(e) {
         setName(e.target.value);
@@ -100,7 +100,7 @@ function ProductForm() {
             if (response.ok) {
                 response.json().then(json => {
                     console.log(json);
-                    // window.location = "http://localhost:3000/";
+                    window.location = "http://localhost:3000/";
                 });
             }
         });
