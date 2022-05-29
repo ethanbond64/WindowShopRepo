@@ -14,7 +14,7 @@ function Video(props) {
                     <a className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} href={props.link}>
                         Go to video
                     </a>
-                    <Link to={`/create/product/${props.id}`}>
+                    <Link to={`/create/product/${props.id}/${props.siteId}`}>
                         <div className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} >
                             Register a product
                         </div>

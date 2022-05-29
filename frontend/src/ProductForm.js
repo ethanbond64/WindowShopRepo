@@ -13,7 +13,7 @@ function addHours(date, x) {
 
 function ProductForm() {
 
-    const { video_id } = useParams();
+    const { video_id, site_id } = useParams();
 
     const now = new Date();
     const [name, setName] = useState("");
@@ -141,8 +141,8 @@ function ProductForm() {
                             Shipping
                         </label>
                     </div>
-                    <div className={`block w-full mx-auto `}>
-                        <div className={`container w-full justify-center items-center`}>
+                    <div className={`block w-full`}>
+                        <div className={`container w-full`}>
                             <img src={imageUrl} className={`mx-auto max-h-36`} ></img>
                         </div>
                         <label id="dragDropBox" className={`flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none`}>
@@ -162,22 +162,32 @@ function ProductForm() {
                     </div>
                 </div>
                 <div className={`bg-white h-fit mt-4 mb-4 p-5`} >
-                    <iframe className={`mx-auto mb-10`} width="560" height="315" src="https://www.youtube.com/embed/aJoo79OwZEI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <div className={`container w-full justify-center items-center mb-20`}>
-                        <input className={`w-1/3 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block mr-6`}
-                            type="number" value={start} onChange={onChangeStart} />
-                        <input className={`w-1/3 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block mr-6`}
-                            type="number" value={end} onChange={onChangeEnd} />
+                    <iframe id="youtubePlayer" className={`mx-auto mb-5 block`} width="560" height="315" src={`https://www.youtube.com/embed/${site_id}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div className={`block container w-full justify-center items-center mb-5`}>
+                        <div className={`inline-block container w-1/2`}>
+                            <button className={`bg-indigo-500 hover:bg-indigo-700 mx-auto text-white font-bold py-2 px-3 rounded float-right inline-block mr-6`}>
+                                Product On Screen
+                            </button>
+                        </div>
+                        <div className={`inline-block container w-1/2`}>
+                            <button className={`bg-indigo-500 hover:bg-indigo-700 max-auto text-white font-bold py-2 px-3 rounded float-left inline-block ml-6`} >
+                                Product Off Screen
+                            </button>
+                        </div>
+                    </div>
+                    <div className={`block container w-full justify-center items-center mb-20`}>
+                        <div className={`inline-block container w-1/2`}>
+                            <input className={`w-1/3 float-right mx-auto shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline block mr-6`}
+                                type="number" value={start} onChange={onChangeStart} />
+                        </div>
+                        <div className={`inline-block container w-1/2`}>
+                            <input className={`w-1/3 float-left mx-auto shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline inline-block ml-6`}
+                                type="number" value={end} onChange={onChangeEnd} />
+                        </div>
                     </div>
                 </div>
-                <h2 className={`font-semibold font-3xl`}>Time the product enters and exists the screen</h2>
-                <div className={`h-30 mt-4 mb-4`}>
-
-                </div>
-                <br />
-
             </div>
-        </div >
+        </div>
     );
 }
 
