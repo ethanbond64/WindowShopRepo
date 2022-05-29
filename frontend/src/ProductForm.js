@@ -17,8 +17,8 @@ function ProductForm() {
 
     const now = new Date();
     const [name, setName] = useState("");
+    const [image, setImage] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const [file, setFile] = useState(null);
     const [start, setStart] = useState(convertDate(now));
     const [end, setEnd] = useState(convertDate(addHours(now, 3)));
 
@@ -48,7 +48,8 @@ function ProductForm() {
             if (response.ok) {
                 response.json().then(json => {
                     console.log(json);
-                    setImageUrl(json.filename);
+                    setImage(json.filename);
+                    setImageUrl("http://localhost:8000/uploads/" + json.filename);
                 });
             }
         });
@@ -57,7 +58,7 @@ function ProductForm() {
     function saveProduct() {
 
         console.log("name: ", name);
-        console.log("img: ", imageUrl);
+        console.log("img: ", image);
         console.log("start: ", start);
         console.log("end: ", end);
 
@@ -70,7 +71,7 @@ function ProductForm() {
             },
             body: JSON.stringify({
                 "name": name,
-                "imgUrl": imageUrl,
+                "imgUrl": image,
                 "timeEnter": start,
                 "timeExit": end,
                 "checkoutJson": {
@@ -114,8 +115,9 @@ function ProductForm() {
                         type="number" value={end} onChange={onChangeEnd} />
                 </div>
                 <br />
+                <img src={imageUrl} style={{ maxHeight: 500, maxWidth: 500 }} ></img>
             </div>
-        </div>
+        </div >
     );
 }
 
