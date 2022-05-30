@@ -114,7 +114,7 @@ function ProductForm() {
             <div className={`bg-gray-100 m-auto p-2.5 pt-1 w-3/4 rounded shadow-md container h-fit`} >
                 <div className={`bg-white rounded h-32 mt-2 mb-4 p-5`} >
                     <span className={`block text-xl mb-3 font-bold`}>Product Name</span>
-                    <input className={`w-1/2 float-left shadow appearance-none border-solid border-2 border-indigo-200 rounded py-2 px-3 text-gray-700 leading-tight focus:ring-indigo-500 focus:border-black-500 focus:shadow-outline inline-block`}
+                    <input className={`w-1/2 float-left shadow appearance-none border-solid border-2 border-indigo-200 rounded py-2 px-3 text-gray-700 leading-tight focus:ring-indigo-900 focus:border-black-500 focus:shadow-outline inline-block`}
                         placeholder="Product Name" onChange={onChangeName} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
                         onClick={saveProduct} >
@@ -129,10 +129,10 @@ function ProductForm() {
                             <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none`}>
                                 <span className={`text-gray-500 sm:text-sm`}> $ </span>
                             </div>
-                            <input onChange={onChangePrice} type="text" name="price" id="price" className={`focus:ring-indigo-500 focus:border-black-500 h-10 block w-full pl-7 pr-12 sm:text-sm rounded-md`} placeholder="0.00" />
+                            <input onChange={onChangePrice} type="text" name="price" id="price" className={`focus:ring-indigo-900 focus:border-black-500 h-10 block w-full pl-7 pr-12 sm:text-sm rounded-md`} placeholder="0.00" />
                             <div className={`absolute inset-y-0 right-0 flex items-center`}>
                                 <label for="currency" className={`sr-only`}>Currency</label>
-                                <select onChange={onChangeCurrency} id="currency" name="currency" className={`focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
+                                <select onChange={onChangeCurrency} id="currency" name="currency" className={`focus:ring-indigo-900 focus:border-indigo-900 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
                                     <option value={"USD"}>USD</option>
                                     <option value={"CAD"}>CAD</option>
                                     <option value={"EUR"}>EUR</option>
@@ -143,7 +143,7 @@ function ProductForm() {
                     <div className={`w-1/3 inline-block m-4 ml-10 mt-0`}>
                         <label for="price" className={`block text-sm font-medium text-gray-700`}>Accept Cards</label>
                         <div className={`mt-1 relative rounded-md shadow-md border-solid border-2 border-indigo-200`}>
-                            <select id="currency" name="currency" className={`focus:ring-indigo-500 focus:border-indigo-500 w-full h-10 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
+                            <select id="currency" name="currency" className={`focus:ring-indigo-900 focus:border-indigo-900 w-full h-10 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md`}>
                                 <option>All</option>
                                 <option>Visa</option>
                                 <option>Mastercard</option>
@@ -181,12 +181,12 @@ function ProductForm() {
                     <iframe id="youtubePlayer" className={`mx-auto mb-5 block`} width="560" height="315" src={`https://www.youtube.com/embed/${site_id}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div className={`block container w-full justify-center items-center mb-5`}>
                         <div className={`inline-block container w-1/2`}>
-                            <button className={`bg-indigo-500 hover:bg-indigo-700 mx-auto text-white font-bold py-2 px-3 rounded float-right inline-block mr-6`}>
+                            <button className={`bg-indigo-900 hover:bg-indigo-700 mx-auto text-white font-bold py-2 px-3 rounded float-right inline-block mr-6`}>
                                 Product On Screen
                             </button>
                         </div>
                         <div className={`inline-block container w-1/2`}>
-                            <button className={`bg-indigo-500 hover:bg-indigo-700 max-auto text-white font-bold py-2 px-3 rounded float-left inline-block ml-6`} >
+                            <button className={`bg-indigo-900 hover:bg-indigo-700 max-auto text-white font-bold py-2 px-3 rounded float-left inline-block ml-6`} >
                                 Product Off Screen
                             </button>
                         </div>
