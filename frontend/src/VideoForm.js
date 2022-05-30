@@ -83,7 +83,6 @@ function VideoForm() {
 
     return (
         <div className={`mx-auto h-screen`}>
-            <h1>Video Form</h1>
             <div className={`bg-gray-50 m-auto p-2.5 w-3/4 rounded shadow-md container h-screen`} >
                 <div className={`h-30 mt-4 mb-10`} >
                     <input className={`w-1/4 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}

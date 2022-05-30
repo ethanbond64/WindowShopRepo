@@ -108,17 +108,16 @@ function ProductForm() {
 
     return (
         <div className={`mx-auto h-screen`}>
-            <h1>Product Form</h1>
-            <div className={`bg-gray-100 m-auto p-2.5 w-3/4 rounded shadow-md container h-fit`} >
-                <div className={`bg-white h-20 mt-4 mb-4 p-5`} >
-                    <input className={`w-1/2 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline inline-block`}
+            <div className={`bg-gray-100 m-auto p-2.5 pt-1 w-3/4 rounded shadow-md container h-fit`} >
+                <div className={`bg-white rounded h-20 mt-2 mb-4 p-5`} >
+                    <input className={`w-1/2 float-left shadow appearance-none border-solid border-2 border-indigo-200 rounded py-2 px-3 text-gray-700 leading-tight focus:ring-indigo-500 focus:border-black-500 focus:shadow-outline inline-block`}
                         placeholder="Product Name" onChange={onChangeName} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
                         onClick={saveProduct} >
                         Save
                     </button>
                 </div>
-                <div className={`bg-white h-72 mt-4 mb-4 p-5`} >
+                <div className={`bg-white rounded h-72 mt-4 mb-4 p-5`} >
                     <div className={`w-1/3 inline-block`}>
                         <label for="price" className={`block text-sm font-medium text-gray-700`}>Price</label>
                         <div className={`mt-1 relative rounded-md shadow-md border-solid border-2 border-indigo-200`}>
@@ -172,7 +171,7 @@ function ProductForm() {
                         </label>
                     </div>
                 </div>
-                <div className={`bg-white h-fit mt-4 mb-4 p-5`} >
+                <div className={`bg-white rounded h-fit mt-4 mb-4 p-5`} >
                     <iframe id="youtubePlayer" className={`mx-auto mb-5 block`} width="560" height="315" src={`https://www.youtube.com/embed/${site_id}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div className={`block container w-full justify-center items-center mb-5`}>
                         <div className={`inline-block container w-1/2`}>

@@ -19,8 +19,9 @@ function Video(props) {
     };
 
     return (
-        <div className={`relative mb-6 p-2.5 pb-4 rounded shadow-md h-fit w-full bg-blue-50 ${hider}`}>
-            <div className={`block absolute rounded-t-lg inset-x-0 top-0 p-2.5 bg-indigo-900 text-white`}>
+        <div className={`relative mb-6 p-2.5 pb-4 rounded shadow-lg h-fit w-full bg-gray-200 ${hider}`}>
+            <div className={`block absolute rounded-t-lg inset-x-0 top-0 p-2.5 bg-indigo-500 text-white`}>
+                <img className={`float-left h-10 mx-0 mr-2`} src="/images/yticon.png"></img>
                 <span className={`float-left text-3xl ml-2`}>{props.name}</span>
                 <button className={`inline float-right rounded font-bold mr-2 py-1 px-3 bg-red-400 hover:bg-red-700 text-white`} onClick={deleteVideo}>
                     Delete
@@ -39,7 +40,7 @@ function Video(props) {
                         <Product {...p} />
                     )}
                     <Link to={`/create/product/${props.id}/${props.siteId}`}>
-                        <div className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} >
+                        <div className={`inline-block border rounded py-1 px-3 bg-indigo-500 hover:bg-indigo-700 text-white`} >
                             {`Register a${props.products.length == 0 ? '' : 'nother'} product`}
                         </div>
                     </Link>
