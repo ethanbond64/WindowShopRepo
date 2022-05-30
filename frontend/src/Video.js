@@ -35,7 +35,7 @@ function Video(props) {
                     <img src={props.thumbnail} className={`max-h-54`} />
                 </div>
                 <div className={`inline-block w-1/2 ml-6 align-top`}>
-                    <span className={`block text-2xl font-bold`}>Registered Products</span>
+                    <span className={`block text-2xl`}>Registered Products</span>
                     {props.products.map((p) =>
                         <Product {...p} />
                     )}

@@ -108,8 +108,12 @@ function ProductForm() {
 
     return (
         <div className={`mx-auto h-screen`}>
+            <div className={`w-full text-center`}>
+                <span className={`block text-4xl my-4 mx-auto`}>Register a new product</span>
+            </div>
             <div className={`bg-gray-100 m-auto p-2.5 pt-1 w-3/4 rounded shadow-md container h-fit`} >
-                <div className={`bg-white rounded h-20 mt-2 mb-4 p-5`} >
+                <div className={`bg-white rounded h-32 mt-2 mb-4 p-5`} >
+                    <span className={`block text-xl mb-3 font-bold`}>Product Name</span>
                     <input className={`w-1/2 float-left shadow appearance-none border-solid border-2 border-indigo-200 rounded py-2 px-3 text-gray-700 leading-tight focus:ring-indigo-500 focus:border-black-500 focus:shadow-outline inline-block`}
                         placeholder="Product Name" onChange={onChangeName} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
@@ -118,6 +122,7 @@ function ProductForm() {
                     </button>
                 </div>
                 <div className={`bg-white rounded h-72 mt-4 mb-4 p-5`} >
+                    <span className={`block text-xl mb-3 font-bold`}>Checkout Info</span>
                     <div className={`w-1/3 inline-block`}>
                         <label for="price" className={`block text-sm font-medium text-gray-700`}>Price</label>
                         <div className={`mt-1 relative rounded-md shadow-md border-solid border-2 border-indigo-200`}>
@@ -172,6 +177,7 @@ function ProductForm() {
                     </div>
                 </div>
                 <div className={`bg-white rounded h-fit mt-4 mb-4 p-5`} >
+                    <span className={`block text-xl mb-3 font-bold`}>On Screen Info</span>
                     <iframe id="youtubePlayer" className={`mx-auto mb-5 block`} width="560" height="315" src={`https://www.youtube.com/embed/${site_id}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div className={`block container w-full justify-center items-center mb-5`}>
                         <div className={`inline-block container w-1/2`}>
@@ -188,11 +194,11 @@ function ProductForm() {
                     <div className={`block container w-full justify-center items-center mb-20`}>
                         <div className={`inline-block container w-1/2`}>
                             <input className={`w-1/3 float-right mx-auto shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline block mr-6`}
-                                type="number" value={start} onChange={onChangeStart} />
+                                placeholder="Time in seconds" type="number" value={start} onChange={onChangeStart} />
                         </div>
                         <div className={`inline-block container w-1/2`}>
                             <input className={`w-1/3 float-left mx-auto shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline inline-block ml-6`}
-                                type="number" value={end} onChange={onChangeEnd} />
+                                placeholder="Time in seconds" type="number" value={end} onChange={onChangeEnd} />
                         </div>
                     </div>
                 </div>

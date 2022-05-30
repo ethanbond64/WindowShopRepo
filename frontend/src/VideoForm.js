@@ -83,8 +83,12 @@ function VideoForm() {
 
     return (
         <div className={`mx-auto h-screen`}>
+            <div className={`w-full text-center`}>
+                <span className={`block text-4xl my-4 mx-auto`}>Register a new video</span>
+            </div>
             <div className={`bg-gray-50 m-auto p-2.5 w-3/4 rounded shadow-md container h-screen`} >
                 <div className={`h-30 mt-4 mb-10`} >
+                    <span className={`block text-xl mb-3 font-bold`}>Video Info</span>
                     <input className={`w-1/4 float-left shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}
                         placeholder="Video Name" onChange={onChangeName} />
                     <button className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right inline-block`}
@@ -92,9 +96,13 @@ function VideoForm() {
                         Save
                     </button>
                 </div>
-                <input className={`w-full float-left shadow appearance-none border rounded mt-4 mb-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}
+                <input className={`block w-full float-left shadow appearance-none border rounded mt-4 mb-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline block`}
                     placeholder="Video URL" onChange={onChangeLink} />
-                <img src={thumbnail} className={`mx-auto mt-10 max-h-80`} ></img>
+                <img src={thumbnail} className={`block mx-auto mt-10 max-h-80`} ></img>
+                <div className={`container w-full text-center`}>
+                    <span>Authenticate Ownership</span>
+                    <img src="/images/btn_google_signin_light_normal_web@2x.png" className={`w-48 mx-auto cursor-pointer`}></img>
+                </div>
             </div>
         </div>
     );
