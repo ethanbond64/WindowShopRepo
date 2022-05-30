@@ -1,20 +1,13 @@
-<div>
-    <script src="https://sandboxcheckouttoolkit.rapyd.net"></script>
-    <script>
-        // window.onload = function () {
-        let checkout = new RapydCheckoutToolkit({
-            pay_button_text: "Click to pay",
-            pay_button_color: "blue",
-            id: "checkout_7353b0382f3733641e101d0b2eefeb95"
+<div style="position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;"
+    id="rapyd-checkout">
+    <h1 id="productTitle" style="color: black;">%productTitle%</h1><img
+        style="max-height:400px; max-width: 400px; margin: auto;" src="%productImage%" id="productImg"><button onclick="(function(){ 
+    let checkout = new RapydCheckoutToolkit({
+            pay_button_text: 'Click to pay',
+            pay_button_color: 'blue',
+            id: '%checkoutId%'
         });
         checkout.displayCheckout();
-        // }
-        window.addEventListener('onCheckoutPaymentSuccess', function (event) {
-            console.log(event.detail)
-        });
-        window.addEventListener('onCheckoutFailure', function (event) {
-            console.log(event.detail.error)
-        });
-    </script>
-    <div style="width: 400px" id="rapyd-checkout"></div>
+    window.dispatchEvent(new Event('extensionCheckoutBegin'));
+ })();">Buy Now</button>
 </div>
