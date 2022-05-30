@@ -213,7 +213,7 @@ const sendAlert = (color, message) => {
 //
 const createCheckoutBox = (title, imgUrl, checkoutId, price) => {
   let productPanel = document.createElement("div");
-  productPanel.setAttribute("style", "position: absolute; width: 405px; height: 600px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 0px; right: 10px; border-radius: 6px;");
+  productPanel.setAttribute("style", "position: absolute; width: 405px; height: auto; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 0px; right: 10px; border-radius: 6px; border: solid #312e81 2px;");
   productPanel.id = "rapyd-checkout";
 
   let productLogo = document.createElement("img");
