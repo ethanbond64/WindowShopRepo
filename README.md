@@ -8,6 +8,24 @@ To run the application locally, you will need Docker and Docker Compose installe
 
 Install Docker Desktop: https://docs.docker.com/get-docker/
 
+
+## Environtment requirements
+For the local server to run there are a few environment variables you need to set.
+
+The easiest way to do this is to create a file in the main directory of this repository called `.env`
+
+The contents of this file should look like this
+```
+COMPOSE_PROJECT_NAME=windowshop
+POSTGRES_USER=windowshop
+POSTGRES_PASSWORD=notasafepassword
+DB_URI=postgresql://windowshop:notasafepassword@postgres:5432/windowshop
+SERVER_NAME=localhost:8000
+RAPYD_KEY={Put your Rapyd Access Key Here}
+RAPYD_SECRET={Put your Rapyd Secret Key Here}
+```
+
+
 ## Running the application
 Navigate to the root directory of the project at the command line and run this command: 
 
