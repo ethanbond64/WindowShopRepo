@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Product from "./Product";
 
 function Video(props) {
 
@@ -34,9 +35,12 @@ function Video(props) {
                 </div>
                 <div className={`inline-block w-1/2 ml-6 align-top`}>
                     <span className={`block text-2xl font-bold`}>Registered Products</span>
+                    {props.products.map((p) =>
+                        <Product {...p} />
+                    )}
                     <Link to={`/create/product/${props.id}/${props.siteId}`}>
                         <div className={`inline-block border rounded py-1 px-3 bg-blue-400 text-white`} >
-                            Register a product
+                            {`Register a${props.products.length == 0 ? '' : 'nother'} product`}
                         </div>
                     </Link>
                 </div>

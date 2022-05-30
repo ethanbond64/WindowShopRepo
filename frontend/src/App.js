@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       {videos.map((v) =>
-        <Video name={v.name} link={v.link} id={v.id} siteId={v.siteId} thumbnail={v.thumbnail} />
+        <Video name={v.name} link={v.link} id={v.id} siteId={v.siteId} thumbnail={v.thumbnail} products={v.products} />
       )}
       <footer className={`text-center`}>
       </footer>

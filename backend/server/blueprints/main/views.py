@@ -2,6 +2,7 @@ import os
 from uuid import uuid4
 from flask import request, Blueprint, jsonify, make_response, send_from_directory, url_for, current_app
 from backend.server.blueprints.main.models import Video, Product
+from sqlalchemy import desc
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
@@ -37,7 +38,7 @@ def getVideoBySite(site, siteId):
 def getVideos():
 
     try:
-        videos = Video.query.all()
+        videos = Video.query.order_by(desc(Video.created_on)).all()
         if videos is not None and videos != []:
             resp = make_response(jsonify({"Data": [v.json(False) for v in videos]}), 200)
             return resp
