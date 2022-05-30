@@ -11,11 +11,14 @@ function Navbar() {
                 <a className={`inline-block border rounded py-1 px-3 bg-indigo-500 text-white mr-4`}>
                     <Link to="/create/video">+ New Video</Link>
                 </a>
-                <a className={`inline-block border rounded py-1 px-3 bg-indigo-500 text-white mr-4`}>
+                <div className={`inline-block border rounded py-1 px-3 bg-indigo-500 text-white mr-4`}>
                     Help
-                </a>
+                </div>
                 <div className={`inline-block border rounded py-1 px-3 bg-indigo-500 text-white mr-4`} >
                     About
+                </div>
+                <div className={`inline-block rounded px-3 pt-1 text-white align-bottom`} >
+                    <img src='/images/userIcon.png' className={`max-h-10`}></img>
                 </div>
             </div>
             {/* <Link to="/" ><img src={logo} alt="Chia No Code Logo" /></Link> */}
