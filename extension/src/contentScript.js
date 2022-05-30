@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
     var start = parseInt(product['timeEnter']);
     var end = parseInt(product['timeExit']);
 
-    let productPanel = createCheckoutBox(product['name'], product['imgUrl'], product['checkoutId']);
+    let productPanel = createCheckoutBox(product['name'], product['imgUrl'], product['checkoutId'], product['checkoutJson']['amount']);
 
     //
     // Begin watching for timestamps
@@ -46,6 +46,13 @@ window.addEventListener("load", async () => {
       pauseCurrentVideo();
       productPanel.style.width = "550px";
       productPanel.style.height = "750px";
+
+      // Delay removing the original elements for effect
+      setTimeout(() => {
+        document.getElementById('productTitle').remove();
+        document.getElementById('productImg').remove();
+        document.getElementById('productBtn').remove();
+      }, 2000);
       console.log("Proceed to checkout");
     });
 
@@ -181,24 +188,37 @@ const checkoutSuccessHandler = () => {
 //
 const sendAlert = (color, message) => {
   let checkout = document.getElementById("rapyd-checkout");
-  let productTitle = document.createElement("h1");
-  productTitle.style.color = color;
-  productTitle.innerHTML = message;
-  productTitle.id = "productAlert";
-  checkout.appendChild(productTitle);
+  let productAlert = document.createElement("div");
+  productAlert.setAttribute("style", "margin: auto; margin-top: 25px; width: 90%; height: 150px; border-radius: 8px; font-size: large; text-align: center; height: auto; padding-top: 6px; padding-bottom: 10px;");
+
+  if (color == "red") {
+    productAlert.style.backgroundColor = "#f8d7da"
+    productAlert.style.color = "#721c24";
+    productAlert.style.borderColor = "#f5c6cb";
+  } else {
+    productAlert.style.backgroundColor = "#d4edda"
+    productAlert.style.color = "#155724";
+    productAlert.style.borderColor = "#c3e6cb";
+  }
+
+  productAlert.innerHTML = message;
+  productAlert.id = "productAlert";
+  checkout.appendChild(productAlert);
 }
 
 //
 // Generate the code for the checkout box
 //
-const createCheckoutBox = (title, imgUrl, checkoutId) => {
+const createCheckoutBox = (title, imgUrl, checkoutId, price) => {
   let productPanel = document.createElement("div");
-  productPanel.setAttribute("style", "position: absolute; width: 400px; height: 400px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px;");
+  productPanel.setAttribute("style", "position: absolute; width: 405px; height: 500px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px; border-radius: 6px;");
   productPanel.id = "rapyd-checkout";
 
   let productTitle = document.createElement("h1");
   productTitle.style.color = "black";
-  productTitle.innerHTML = title;
+  // productTitle.style.fontSize = "black";
+  productTitle.style.margin = "10px";
+  productTitle.innerHTML = "On Screen: " + title;
   productTitle.id = "productTitle";
 
   let productImg = document.createElement("img");
@@ -211,6 +231,7 @@ const createCheckoutBox = (title, imgUrl, checkoutId) => {
   fetch(chrome.runtime.getURL('/checkoutButton.html'))
     .then(r => r.text())
     .then(t => t.replace('%checkoutId%', checkoutId))
+    .then(t => t.replace('%price%', (Math.round(parseFloat(price) * 100) / 100).toFixed(2)))
     .then(html => { productPanel.appendChild(parser.parseFromString(html, 'text/html').body.firstChild) });
 
   return productPanel;

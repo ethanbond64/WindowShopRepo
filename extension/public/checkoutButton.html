@@ -1,4 +1,6 @@
-<button onclick='(function(){ 
+<button id="productBtn"
+    style="background-color: #6366f1; width: auto; height: 40px; color: white; font-size: large; padding: 10px; margin-top:10px; border: none; border-radius: 3px; cursor: pointer;"
+    onclick='(function(){ 
     let checkout = new RapydCheckoutToolkit({
             pay_button_text: "Click to pay",
             pay_button_color: "blue",
@@ -6,4 +8,4 @@
         });
         checkout.displayCheckout();
     window.dispatchEvent(new Event("extensionCheckoutBegin"));
- })();'>Buy Now</button>
+ })();'>Buy Now for $%price%</button>
