@@ -19,7 +19,7 @@ function Video(props) {
     };
 
     return (
-        <div className={`relative mb-6 p-2.5 pb-4 rounded shadow-lg h-fit w-full bg-gray-200 ${hider}`}>
+        <div className={`relative my-6 p-2.5 pb-4 rounded shadow-lg h-fit w-full bg-gray-200 ${hider}`}>
             <div className={`block absolute rounded-t-lg inset-x-0 top-0 p-2.5 bg-indigo-500 text-white`}>
                 <img className={`float-left h-10 mx-0 mr-2`} src="/images/yticon.png"></img>
                 <span className={`float-left text-3xl ml-2`}>{props.name}</span>

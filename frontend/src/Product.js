@@ -2,7 +2,19 @@ import React, { useState } from "react";
 
 function Product(props) {
 
-    console.log(props);
+    const [deleted, setDeleted] = useState(false);
+    let hider = deleted ? 'hidden' : '';
+
+    function deleteProduct() {
+        fetch(`http://localhost:8000/delete/product/${props.id}`, { method: 'GET', }).then(response => {
+            if (response.ok) {
+                response.json().then(json => {
+                    console.log(json);
+                    setDeleted(true);
+                });
+            }
+        });
+    }
 
     function secondsToTimestamp(secondsIn) {
         // THIS CODE IS FROM https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
@@ -28,7 +40,7 @@ function Product(props) {
     }
 
     return (
-        <div className={`relative my-2 p-2.5 pb-4 rounded shadow-md h-fit w-full bg-white`}>
+        <div className={`relative my-2 p-2.5 pb-4 rounded shadow-md h-fit w-full bg-white ${hider}`}>
             <div className={`block w-full`}>
                 <span className={`text-xl font-bold ml-2`}>{props.name}</span>
             </div>
@@ -49,6 +61,11 @@ function Product(props) {
                 <div className={`inline-block ml-6 align-top`}>
                     <span className={`block text-lg font-bold`}>Currency</span>
                     <span>{props.checkoutJson.currency}</span>
+                </div>
+                <div className={`inline-block mr-6 align-top float-right`}>
+                    <button className={`inline float-right rounded font-bold mr-2 py-1 px-3 bg-red-400 hover:bg-red-700 text-white`} onClick={deleteProduct}>
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>

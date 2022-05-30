@@ -13,7 +13,6 @@ import os
 
 load_dotenv()
 
-# TODO watch these commented out variables
 http_method = 'post'                   # get|put|post|delete - must be lowercase
 # http_method = 'get'                   # get|put|post|delete - must be lowercase
 base_url = 'https://sandboxapi.rapyd.net'

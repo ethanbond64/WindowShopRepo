@@ -11,6 +11,16 @@ CORS(main, origins=["http://localhost:3000","https://www.youtube.com/", "*"])
 
 UPLOADS_ABSOLUTE_PATH = "/home/backend/server/static/uploads"
 
+def productValid(data):
+    
+    if type(data) != dict:
+        return False
+    
+    if "name" not in data or "timeEnter" not in data or "timeExit" not in data or "checkoutJson" not in data:
+        return False
+    
+    return True
+
 @main.route('/test', methods=['GET'])
 def get_test():
     return make_response(jsonify({"Test": True}), 200)
@@ -23,10 +33,8 @@ def getVideoBySite(site, siteId):
         video = Video.query.filter(Video.site == site.lower(), Video.siteId == siteId).first()
         if video is not None:
             resp = make_response(jsonify({"Data": video.json(True)}), 200)
-            # TODO make a wrapper so that these headers are on every resonse
             resp.headers['Access-Control-Allow-Origin'] = '*'
             resp.headers['Content-Type'] = 'application/json'
-            print(resp.headers)
             return resp
 
     except:
@@ -72,9 +80,8 @@ def createProductBySite(site, siteId):
 
     try:
         video = Video.query.filter(Video.site == site.lower(), Video.siteId == siteId).first()
-        # TODO validate response has required product fields
 
-        if video is not None and data is not None:
+        if video is not None and productValid(data):
             data["videoId"] = video.id
             product = Product(**data).save()
             return make_response(jsonify({"Data": product.json(False)}), 200)
@@ -91,8 +98,8 @@ def createProduct(videoId):
     
     try:
         video = Video.query.filter(Video.id == int(videoId)).first()
-        # TODO validate response has required product fields
-        if video is not None and data is not None:
+        
+        if video is not None and productValid(data):
             data["videoId"] = video.id
             product = Product(**data).save()
             return make_response(jsonify({"Data": product.json(False)}), 200)
@@ -113,6 +120,19 @@ def deleteVideo(videoId):
         return make_response(jsonify({"Error": "Error during delete attempt"}), 500)
 
     return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
+
+@main.route('/delete/product/<productId>')
+def deleteProduct(productId):
+    try:
+        product = Product.query.filter(Product.id == int(productId)).first()
+        if product is not None:
+            product.delete()
+            return make_response(jsonify({"Deleted": True}), 200)
+    except:
+        return make_response(jsonify({"Error": "Error during delete attempt"}), 500)
+
+    return make_response(jsonify({"Error": "Incomplete or invalid request"}), 400)
+
 
 @main.route('/upload', methods=['POST'])
 def upload():
