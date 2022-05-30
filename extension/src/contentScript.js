@@ -43,14 +43,16 @@ window.addEventListener("load", async () => {
     // Listener to go to checkout
     //
     window.addEventListener("extensionCheckoutBegin", () => {
+      document.getElementById('productImg').remove();
+
       pauseCurrentVideo();
       productPanel.style.width = "550px";
       productPanel.style.height = "750px";
 
       // Delay removing the original elements for effect
       setTimeout(() => {
+        document.getElementById('productLogo').remove();
         document.getElementById('productTitle').remove();
-        document.getElementById('productImg').remove();
         document.getElementById('productBtn').remove();
       }, 2000);
       console.log("Proceed to checkout");
@@ -211,8 +213,13 @@ const sendAlert = (color, message) => {
 //
 const createCheckoutBox = (title, imgUrl, checkoutId, price) => {
   let productPanel = document.createElement("div");
-  productPanel.setAttribute("style", "position: absolute; width: 405px; height: 500px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 10px; right: 10px; border-radius: 6px;");
+  productPanel.setAttribute("style", "position: absolute; width: 405px; height: 600px; background-color: rgb(255, 255, 255); z-index: 3001; overflow: auto; text-align: center; top: 0px; right: 10px; border-radius: 6px;");
   productPanel.id = "rapyd-checkout";
+
+  let productLogo = document.createElement("img");
+  productLogo.setAttribute("style", "max-height:45px; max-width: 400px; margin: auto;")
+  productLogo.src = chrome.runtime.getURL("/WindowShopTextLogo.png");
+  productLogo.id = "productLogo";
 
   let productTitle = document.createElement("h1");
   productTitle.style.color = "black";
@@ -226,6 +233,7 @@ const createCheckoutBox = (title, imgUrl, checkoutId, price) => {
   productImg.src = imgUrl;
   productImg.id = "productImg";
 
+  productPanel.appendChild(productLogo);
   productPanel.appendChild(productTitle);
   productPanel.appendChild(productImg);
   fetch(chrome.runtime.getURL('/checkoutButton.html'))

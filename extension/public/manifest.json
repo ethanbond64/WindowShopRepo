@@ -32,6 +32,7 @@
   ],
   "web_accessible_resources": [
     "checkout.html",
-    "checkoutButton.html"
+    "checkoutButton.html",
+    "WindowShopTextLogo.png"
   ]
 }
