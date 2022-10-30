@@ -90,7 +90,7 @@ function ProductForm() {
                     "amount": parseFloat(price),
                     "country": "US",
                     "currency": currency,
-                    "payment_method _types_include": [
+                    "payment_method_types_include": [
                         "us_mastercard_card",
                         "us_visa_card"
                     ]

@@ -8,13 +8,27 @@ window.addEventListener("load", async () => {
 
   if (siteData.site != null && siteData.siteId != null) {
 
-    let data = await fetch('http://localhost:8000/fetch/video/' + siteData.site + '/' + siteData.siteId, { mode: 'cors' })
-      .then(response => response.json())
-      .then(payload => payload['Data']);
 
-    let product = data['products'].at(0);
-    var start = parseInt(product['timeEnter']);
-    var end = parseInt(product['timeExit']);
+
+    let data = await fetch(`http://localhost:8000/fetch/externalContent?organizationId=${3}&organizationContentId=${siteData.siteId}`,
+      { mode: 'cors' }
+    )
+      .then(response => response.json())
+      .then(data => data != undefined && data["Data"] != undefined ? data["Data"][0]["mediaId"] : -1)
+      .then(mediaId => {
+        if (mediaId !== -1) {
+          return fetch('http://localhost:8000/trigger/products/' + mediaId, { mode: 'cors' })
+            .then(response => response.json())
+            .then(payload => payload['Data']);
+        }
+        return null;
+      });
+
+    let row = data.at(0);
+    let product = row['Product'];
+    let trigger = row['Trigger'];
+    var start = parseInt(trigger['timeEnter']);
+    var end = parseInt(trigger['timeExit']);
 
     let productPanel = createCheckoutBox(product['name'], product['imgUrl'], product['checkoutId'], product['checkoutJson']['amount']);
 
